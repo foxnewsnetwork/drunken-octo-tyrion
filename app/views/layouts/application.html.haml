@@ -1,0 +1,15 @@
+!!!
+%html
+	%head
+		%title= website_title
+		=stylesheet_link_tag    "application", :media => "all" 
+		=javascript_include_tag "application" 
+		=csrf_meta_tags
+		=yield :head
+	%body
+		%section.header
+			=yield :header
+		%section.body
+			=yield
+		%section.footer
+			=yield :footer
