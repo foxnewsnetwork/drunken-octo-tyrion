@@ -1,24 +1,24 @@
 Unfactory::Application.routes.draw do
-  get "pages/home"
-
-  get "pages/about"
-
-  get "pages/faq"
-
-  resources :companies
-
-
-  resources :orders
-
+  devise_for :users
 
   resources :materials
+  
+  resources :companies do 
+    resources :orders
+  end # companies
 
+  resources :orders do 
+    resources :materials
+  end # orders
 
-  resources :plants
+  resources :plants do 
+    resources :materials
+    resources :orders
+  end # plants
 
-
-  resources :users
-
+  ['about','faq'].each do |path|
+    match path, :to => "pages##{path}"
+  end # pages
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -69,7 +69,7 @@ Unfactory::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  # root :to => 'welcome#index'
+  root :to => 'pages#home'
 
   # See how all your routes lay out with "rake routes"
 
