@@ -9,5 +9,16 @@
 #
 
 class Company < ActiveRecord::Base
-  # attr_accessible :title, :body
-end
+  attr_accessible :name
+  has_many :orders
+
+  # qs = [quantity, units]
+  # qs = [{:quantity => , :units =>}, ...]
+  def buys *qs
+  	if qs.first.is_a? Integer or qs.first.is_a? Float and qs.last.is_a? String
+      Transaction.new self, :quantity => qs.first, :units => qs.last
+    else
+      Transaction.new self, *qs
+    end
+  end # buys
+end # company

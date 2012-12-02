@@ -2,5 +2,10 @@
 
 FactoryGirl.define do
   factory :order do
-  end
-end
+  	carrier Faker::Company.name
+	external_id Faker::Name.first_name
+	notes Faker::Company.bs
+	association :company, :factory => :company, :strategy => :build
+	association :plant, :factory => :plant, :strategy => :build
+  end # order
+end # factory

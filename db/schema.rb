@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121130164112) do
+ActiveRecord::Schema.define(:version => 20121130204025) do
 
   create_table "companies", :force => true do |t|
     t.string   "name"
@@ -22,17 +22,17 @@ ActiveRecord::Schema.define(:version => 20121130164112) do
   add_index "companies", ["name"], :name => "index_companies_on_name", :unique => true
 
   create_table "materials", :force => true do |t|
-    t.integer  "order_id"
-    t.integer  "plant_id"
     t.string   "name"
-    t.decimal  "quantity",   :precision => 12, :scale => 4
+    t.decimal  "quantity",     :precision => 12, :scale => 4
     t.string   "units"
-    t.datetime "created_at",                                :null => false
-    t.datetime "updated_at",                                :null => false
+    t.datetime "created_at",                                  :null => false
+    t.datetime "updated_at",                                  :null => false
+    t.integer  "buyable_id"
+    t.string   "buyable_type"
   end
 
-  add_index "materials", ["name", "order_id"], :name => "index_materials_on_name_and_order_id", :unique => true
-  add_index "materials", ["plant_id", "name"], :name => "index_materials_on_plant_id_and_name", :unique => true
+  add_index "materials", ["buyable_id", "buyable_type"], :name => "ion_b_t"
+  add_index "materials", ["name", "buyable_id", "buyable_type"], :name => "ion_n_b_t", :unique => true
 
   create_table "orders", :force => true do |t|
     t.integer  "company_id"

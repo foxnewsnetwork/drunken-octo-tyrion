@@ -18,5 +18,32 @@
 require 'spec_helper'
 
 describe Plant do
-  pending "add some examples to (or delete) #{__FILE__}"
-end
+	describe "sanity test" do 
+		it "should allow me to factory out one" do
+			plant = FactoryGirl.create :plant
+			plant.should_not be_nil
+		end # it
+	end # sanity
+	describe "relationships" do
+		before :each do
+			@plant = FactoryGirl.create :plant
+		end # each
+		describe "plant-material" do
+			describe "creation" do 
+				it "should allow me to create a material" do
+					lambda do
+						@plant.materials.create FactoryGirl.attributes_for(:material)
+					end.should change(Material, :count).by(1)
+				end # it
+			end # creation
+			describe "interconnection" do 
+				before :each do
+					@material = @plant.materials.create FactoryGirl.attributes_for(:material)
+				end # each
+				it "should give mthe material" do
+					@plant.materials.should include @material
+				end # it
+			end # interconnection
+		end # plant-material
+	end # relationshipos
+end # Plant

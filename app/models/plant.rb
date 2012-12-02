@@ -16,5 +16,18 @@
 #
 
 class Plant < ActiveRecord::Base
-  # attr_accessible :title, :body
-end
+  attr_accessible :name, :country, :state, :city, :address, :sqft, :founding_date, :closing_date
+  has_many :materials, :as => :buyable
+
+  # qs = [quantity, units]
+  # qs = [{:quantity => , :units =>}, ...]
+  def sells *qs
+		if qs.first.is_a? Integer or qs.first.is_a? Float and qs.last.is_a? String
+			Transaction.new self, :quantity => qs.first, :units => qs.last
+		else
+      Transaction.new self, *qs
+    end
+  end # sells
+end # Plant
+
+

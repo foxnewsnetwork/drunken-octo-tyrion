@@ -13,5 +13,9 @@
 #
 
 class Order < ActiveRecord::Base
-  # attr_accessible :title, :body
-end
+  attr_accessible :carrier, :external_id, :notes
+  belongs_to :company
+  belongs_to :plant 
+  has_many :materials, :as => :buyable
+end # Order
+
