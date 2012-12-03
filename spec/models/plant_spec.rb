@@ -46,4 +46,20 @@ describe Plant do
 			end # interconnection
 		end # plant-material
 	end # relationshipos
+	describe "accountability" do 
+		before :each do 
+	  		@plant = FactoryGirl.create :plant
+	  		2.times do |n|
+	  			(@materials ||= []) << @plant.materials.create(FactoryGirl.attributes_for :material, :name => "dogfood#{n}")
+	  			(@quantities ||= []) << { :quantity => 10, :units => "tons" }
+	  			(@prices ||= []) << 100
+	  		end # 2 times
+	  		@expected = 2000.0
+	  		@company = FactoryGirl.create :company 
+	  		@order = @company.buys(*@quantities).of(*@materials).at(*@prices).from(@plant)
+	  	end # each
+	  	it "should show me the money" do 
+	  		@plant.gross_income.to_s.should eq @expected.to_s
+	  	end # it
+	end # it accountability
 end # Plant

@@ -17,8 +17,8 @@ class Order < ActiveRecord::Base
   # gross_income, expenses, net_income
   include Accountable
   attr_accessible :carrier, :external_id, :notes
-  belongs_to :company
-  belongs_to :plant 
+  belongs_to :company # buyer
+  belongs_to :plant # seller
   has_many :materials, :as => :buyable, :include => :buyable
   # from Accountable
   implement_income do |order|

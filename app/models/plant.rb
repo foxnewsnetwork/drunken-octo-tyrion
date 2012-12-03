@@ -16,8 +16,18 @@
 #
 
 class Plant < ActiveRecord::Base
+  include Accountable
   attr_accessible :name, :country, :state, :city, :address, :sqft, :founding_date, :closing_date
   has_many :materials, :as => :buyable
+  has_many :orders
+
+  # Accountable package
+  implement_income do |plant|
+    plant.orders.inject(0) { |mem, order| mem += order.gross_income }
+  end # income
+  implement_expenses do |plant|
+    plant.orders.inject(0) { |mem, order| mem += order.expenses }
+  end # expenses
 
   # qs = [quantity, units]
   # qs = [{:quantity => , :units =>}, ...]
