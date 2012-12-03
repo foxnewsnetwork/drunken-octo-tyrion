@@ -19,21 +19,28 @@ class Transaction
 		initialize_volumes *qs
 	end # initialize
 
-	def of *ms
-		if ms.count != volumes.count
+	def of *materials
+		Rails.logger.debug "of material"
+		if materials.count != volumes.count
 			@errors[:mismatch] = "Mismatch count error"
 		end # if
-		@storage = {}
-		ms.count.times do |k|
-			@storage[ms[k].name] = volumes[k].merge :material => ms[k]
-			@errors.delete :material if @errors.has_key? :material 
-		end 
+		@materials = materials
 		return self
 	end # of
+
+	def at *prices
+		Rails.logger.debug "at price"
+		if prices.count != volumes.count
+			@errors[:mismatch] = "Mismatch price error"
+		end # if
+		@prices = prices
+		return self
+	end # price
 
 	def from p 
 		@plant = p
 		@errors.delete :plant 
+		initialize_storage
 		return create_order if ready? 
 		nil
 	end # from
@@ -41,6 +48,7 @@ class Transaction
 	def to c
 		@company = c
 		@errors.delete :company
+		initialize_storage
 		return create_order if ready?
 		nil
 	end # to
@@ -57,6 +65,20 @@ class Transaction
 	end # ready?
 	
 	private
+	def initialize_storage
+		Rails.logger.debug "initialize_storage"
+		@storage = {}
+		@materials.count.times do |k|
+			Rails.logger.debug "Materials List: "
+			Rails.logger.debug @materials.to_s
+			Rails.logger.debug "Prices List: "
+			Rails.logger.debug @prices.to_s
+			@storage[@materials[k].name] = volumes[k].merge :material => @materials[k], :unit_price => @prices[k]
+			@errors.delete :material if @errors.has_key? :material 
+			@errors.delete :price if @errors.has_key? :price 
+		end 
+	end # initialize_storage
+
 	def initialize_readies
 		implement_check do |trans|
 			if trans.errors.empty?
@@ -105,9 +127,10 @@ class Transaction
 
 	def initialize_errors
 		@errors = {
+			:price => "No price specified" ,
 			:plant => "No plant specified" ,
 			:material => "No material specified" ,
-			:company => "No company specified" ,
+			:company => "No company specified"
 		}
 	end # initialize_errors
 

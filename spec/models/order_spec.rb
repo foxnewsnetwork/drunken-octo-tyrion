@@ -34,12 +34,12 @@ describe Order do
   	describe "creation" do 
   		it "should support special syntax" do 
   			lambda do 
-  				@plant.sells(100, "pounds").of(@material).to(@company)
+  				@plant.sells(100, "pounds").of(@material).at(100).to(@company)
   			end.should change(Order, :count).by 1
   		end # it
   		it "should support special syntax the other way too" do 
   			lambda do 
-  				@company.buys(100, "pounds").of(@material).from(@plant)
+  				@company.buys(100, "pounds").of(@material).at(100).from(@plant)
   			end.should change(Order, :count).by 1
   		end # it
       describe "multiple" do 
@@ -49,10 +49,10 @@ describe Order do
             (@quantities ||= []) << ({ :quantity => rand(100), :units => "pounds" })
           end
           @forward = lambda do 
-            @plant.sells(*@quantities).of(*@materials).to(@company)
+            @plant.sells(*@quantities).of(*@materials).at(1,2,3,4,5).to(@company)
           end
           @reverse = lambda do 
-            @company.buys(*@quantities).of(*@materials).from(@plant)
+            @company.buys(*@quantities).of(*@materials).at(1,2,3,4,5).from(@plant)
           end 
         end # each
         it "should support syntax" do 
@@ -71,7 +71,7 @@ describe Order do
   	end # creation
   	describe "interconnection" do 
   		before :each do 
-  			@order = @plant.sells(100, "pounds").of(@material).to(@company)
+  			@order = @plant.sells(100, "pounds").of(@material).at(100).to(@company)
   		end # each
   		it "should have the correct info" do 
   			@order.materials.first.name.should eq @material.name
@@ -82,7 +82,7 @@ describe Order do
         before :each do 
           @evil_material = @plant.materials.create FactoryGirl.attributes_for(:material).replace( :name => FactoryGirl.generate(:metal) )
           2.times do (@evil_quantities ||= []) << FactoryGirl.generate(:quantities) end
-          @double_order = @plant.sells(*@evil_quantities).of(@material, @evil_material).to(@company)
+          @double_order = @plant.sells(*@evil_quantities).of(@material, @evil_material).at(100,200).to(@company)
         end # each 
         it "should match quantities name" do 
           @double_order.materials.first.name.should eq @material.name
@@ -104,16 +104,32 @@ describe Order do
       end # each
       it "should not let me sell" do 
         lambda do
-          @plant.sells(123, "tons").of(@adamantium).to(@company)
+          @plant.sells(123, "tons").of(@adamantium).at(100).to(@company)
         end.should_not change(Order, :count)
       end # it
       it "should not let me buy either" do 
         lambda do
-          @company.buys(123, "tons").of(@adamantium).from(@plant)
+          @company.buys(123, "tons").of(@adamantium).at(100).from(@plant)
         end.should_not change(Order, :count)
       end # it
     end # bad input
   end # relationships
+  describe "accountability" do 
+    before :each do
+      @plant = FactoryGirl.create :plant 
+      @company = FactoryGirl.create :company 
+      5.times do |n|
+        (@materials ||= []) << @plant.materials.create( FactoryGirl.attributes_for :material, :name => "metal234#{n}" )
+        (@quantities ||= []) << { :quantity => 10, :units => "pounds" }
+        (@prices ||= []) << 10
+      end 
+      @expected = 500
+      @order = @plant.sells(*@quantities).of(*@materials).at(*@prices).to(@company)
+    end # each
+    it "should get the correct money count" do 
+      @order.net_income.should eq @expected
+    end # it
+  end # accountability
 end # Order
 
 =begin

@@ -10,6 +10,7 @@
 #  updated_at   :datetime         not null
 #  buyable_id   :integer
 #  buyable_type :string(255)
+#  unit_price   :decimal(12, 4)
 #
 
 require 'spec_helper'

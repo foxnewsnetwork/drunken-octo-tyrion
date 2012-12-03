@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121130204025) do
+ActiveRecord::Schema.define(:version => 20121202153741) do
 
   create_table "companies", :force => true do |t|
     t.string   "name"
@@ -29,6 +29,7 @@ ActiveRecord::Schema.define(:version => 20121130204025) do
     t.datetime "updated_at",                                  :null => false
     t.integer  "buyable_id"
     t.string   "buyable_type"
+    t.decimal  "unit_price",   :precision => 12, :scale => 4
   end
 
   add_index "materials", ["buyable_id", "buyable_type"], :name => "ion_b_t"

@@ -10,9 +10,14 @@
 #  updated_at   :datetime         not null
 #  buyable_id   :integer
 #  buyable_type :string(255)
+#  unit_price   :decimal(12, 4)
 #
 
 class Material < ActiveRecord::Base
 	belongs_to :buyable, :polymorphic => true
-	attr_accessible :name, :quantity, :units
+	attr_accessible :name, :quantity, :units, :unit_price
+	
+	def cost
+		unit_price * quantity
+	end # cost
 end # Material

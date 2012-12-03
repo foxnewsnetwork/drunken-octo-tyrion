@@ -10,8 +10,9 @@ FactoryGirl.define do
 	end # quantites
 
   factory :material do
-  	name "steel"
+  	name FactoryGirl.generate(:metal)
 	quantity 5000
+	unit_price 15.0
 	units 'tons'
 	association :buyable, :factory => :plant, :strategy => :build
   end

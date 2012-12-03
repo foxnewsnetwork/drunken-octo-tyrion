@@ -13,9 +13,21 @@
 #
 
 class Order < ActiveRecord::Base
+  # Accountable features:
+  # gross_income, expenses, net_income
+  include Accountable
   attr_accessible :carrier, :external_id, :notes
   belongs_to :company
   belongs_to :plant 
-  has_many :materials, :as => :buyable
+  has_many :materials, :as => :buyable, :include => :buyable
+  # from Accountable
+  implement_income do |order|
+    order.materials.inject(0) do |mem, material| 
+      mem += material.cost if 0 < material.cost  
+    end
+  end # implement_income
+  implement_expenses do |order|
+    order.materials.inject(0) { |mem, material| mem -= material.cost if 0 > material.cost  }
+  end # 
 end # Order
 
