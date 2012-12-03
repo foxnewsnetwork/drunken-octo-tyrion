@@ -4,7 +4,7 @@ Unfactory::Application.routes.draw do
   resources :materials
   
   resources :companies do 
-    resources :orders
+    resources :orders, :except => [:create, :destroy, :new]
   end # companies
 
   resources :orders do 
@@ -13,7 +13,8 @@ Unfactory::Application.routes.draw do
 
   resources :plants do 
     resources :materials
-    resources :orders
+    resources :orders, :except => [:create]
+    resources :transactions, :only => [:create]
   end # plants
 
   ['about','faq'].each do |path|

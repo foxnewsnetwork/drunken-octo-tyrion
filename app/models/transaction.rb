@@ -67,6 +67,15 @@ class Transaction
 	private
 	def initialize_storage
 		Rails.logger.debug "initialize_storage"
+		@materials = @materials.map do |material| 
+			if material.is_a? Material
+				material 
+			elsif material.is_a? String
+				@plant.materials.find_by_name(material)
+			else
+				nil
+			end
+		end # materials
 		@storage = {}
 		@materials.count.times do |k|
 			Rails.logger.debug "Materials List: "
@@ -92,7 +101,7 @@ class Transaction
 		implement_check do |trans|
 			okay_flag = true
 			trans.storage.map { |key,hash| hash[:material] }.each do |material|
-				if material.buyable_type != "Plant" or material.buyable_id != trans.plant.id
+				if material.nil? or material.buyable_type != "Plant" or material.buyable_id != trans.plant.id
 					Rails.logger.debug "Plant doesn't have the material requested: type-#{material.buyable_type}, id-#{material.buyable_id}"
 					okay_flag = false 
 					break

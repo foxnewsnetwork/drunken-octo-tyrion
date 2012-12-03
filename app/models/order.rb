@@ -28,6 +28,33 @@ class Order < ActiveRecord::Base
   end # implement_income
   implement_expenses do |order|
     order.materials.inject(0) { |mem, material| mem -= material.cost if 0 > material.cost  }
-  end # 
+  end # expenses
+
+  def custom_create params
+    quantities = params[:quantities].zip(params[:units]).map do |q|
+      { :quantity => q.first, :units => q.last }
+    end # quantities
+    materials = self.plant.materials.where( :name => params[:materials] )
+    company = Company.find_or_create_by_name(params[:company])
+    order = self.plant.sells(*quantities).of(*materials).at(params[:prices]).to(company)
+  end # custom_create
 end # Order
 
+class Orderform
+  def initialize params
+    @prices = params[:prices]
+    @quantities = params[:quantities].zip(params[:units]).map do |q|
+      { :quantity => q.first, :units => q.last }
+    end # quantities
+    @materials = params[:materials]
+    @company = Company.find_or_create_by_name(params[:company])
+  end # initialize
+
+  def generate_order plant
+    begin
+      order = plant.sells(*@quantities).of(*@materials).at(@prices).to(@company)
+    rescue
+      nil
+    end
+  end # generate_order
+end # OrderForm
