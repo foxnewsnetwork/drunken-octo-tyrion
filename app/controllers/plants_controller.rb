@@ -1,6 +1,6 @@
 class PlantsController < ApplicationController
-	expose(:plants) { Plant.where(params.except(:action, :controller, :format)) }
-	expose(:plant) { Plant.find(params[:id]) }
+	#expose(:plants) { Plant.where(params.except(:action, :controller, :format)) }
+	expose(:plant)# ,  :finder => :find, :finder_parameter => :id )
 	before_filter :allow_management, :only => [:create, :update, :destroy]
 
 
@@ -15,6 +15,7 @@ class PlantsController < ApplicationController
 	end # create
 
 	def update
+
 		if plant.update_attributes( params[:plant] )
 			flash[:success] = t(:success, :scope => [:plant, :controllers, :update, :flash])
 			redirect_to plant
