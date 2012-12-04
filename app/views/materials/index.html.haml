@@ -1,0 +1,13 @@
+%h1= plant.name
+%ul
+	-if current_user.level > 6
+		%li=link_to "Direct Material Creation", new_plant_material_path(plant)
+	-if current_user.level > 2
+		%li=link_to 'New material'
+		%li=link_to "New material purchase", new_input_plant_orders_path(plant)
+		%li=link_to "New material sales", new_output_plant_orders_path(plant)
+%ul
+	-materials.each do |material|
+		%li
+			%h5=link_to material.name, plant_material_path(material)
+			%p= material.quantity.to_s + " " + material.units

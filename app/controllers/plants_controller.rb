@@ -1,5 +1,6 @@
 class PlantsController < ApplicationController
 	#expose(:plants) { Plant.where(params.except(:action, :controller, :format)) }
+	expose(:plants)
 	expose(:plant)# ,  :finder => :find, :finder_parameter => :id )
 	before_filter :allow_management, :only => [:create, :update, :destroy]
 

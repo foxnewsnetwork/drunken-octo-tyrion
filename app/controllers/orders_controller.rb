@@ -1,5 +1,5 @@
 class OrdersController < ApplicationController
-	expose(:plant) { Plant.find params[:plant_id] }
+	expose(:plant) 
 	expose :orders, :ancestor => :plant
 	expose :order
 	before_filter :allow_sales, :only => [:create, :update, :destroy]
@@ -28,4 +28,12 @@ class OrdersController < ApplicationController
 	def approve
 		raise "Approval Not Implemented Exception"
 	end # approve
+
+	def new_input
+		
+	end # new_input
+
+	def new_output
+
+	end # new_output
 end # ordersController

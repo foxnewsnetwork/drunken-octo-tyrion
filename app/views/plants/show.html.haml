@@ -1,6 +1,8 @@
 -if user_signed_in?
 	-if current_user.level > 4
-		=link_to "edit plant", edit_plant_path( plant)
+		%ul
+			%li=link_to "edit plant", edit_plant_path( plant)
+			%li=link_to "Inventory", plant_materials_path(plant)
 %dl
 	-plant.class.attr_accessible[:default].each do |attr|
 		-next if attr.blank?
