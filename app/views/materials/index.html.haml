@@ -3,9 +3,8 @@
 	-if current_user.level > 6
 		%li=link_to "Direct Material Creation", new_plant_material_path(plant)
 	-if current_user.level > 2
-		%li=link_to 'New material'
-		%li=link_to "New material purchase", new_input_plant_orders_path(plant)
-		%li=link_to "New material sales", new_output_plant_orders_path(plant)
+		%li=link_to "New material purchase", new_plant_sale_path(plant)
+		%li=link_to "New material sales", new_plant_purchase_path(plant)
 %ul
 	-materials.each do |material|
 		%li

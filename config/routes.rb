@@ -1,4 +1,5 @@
 Unfactory::Application.routes.draw do
+
   devise_for :users
   resources :users, :only => [:show, :edit, :update]
   
@@ -12,12 +13,9 @@ Unfactory::Application.routes.draw do
 
   resources :plants do 
     resources :materials
-    resources :orders, :except => [:create] do 
-      collection do 
-        get 'new_input'
-        get 'new_output'
-      end # member
-    end # order
+    resources :orders, :except => [:create, :index, :new]
+    resources :sales, :only => [:index, :create, :new]
+    resources :purchases, :only => [:index, :create, :new]
     resources :transactions, :only => [:create]
   end # plants
 

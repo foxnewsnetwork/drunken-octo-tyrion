@@ -18,7 +18,7 @@ describe TransactionsController do
 			end # create
 		end # each
 		context "as sales" do 
-			login_user 3
+			login_user :sales
 			it "should create the order" do 
 				@create.should change(Order, :count).by 1
 			end # it

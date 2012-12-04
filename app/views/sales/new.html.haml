@@ -1,0 +1,22 @@
+=form_tag plant_sales_path(plant), :class => "array-form" do
+	%legend Sales Order Form
+	%fieldset
+		=label_tag "sale_company", "Company"
+		=text_field_tag "sale[company]"
+		=label_tag "sale_carrier", "Carrier"
+		=text_field_tag "sale[carrier]"
+		=label_tag "sale_notes", 'Comments'
+		=text_area_tag "sale[notes]"
+	%fieldset.array-form{ :for => "sale" }
+		=label_tag "material_name", "Name"
+		=text_field_tag "material[name]" 
+		=label_tag "material_quantity", "Quantity"
+		=number_field_tag "material[quantity]"
+		=label_tag "material_units", "Units"
+		=select_tag "material[units]", options_for_select(["pounds", "tons"])
+		=label_tag "material_price", "Unit price"
+		=number_field_tag "material[price]", 0, :step => 0.001
+	%fieldset.form-actions
+		=submit_tag "create sales"
+
+

@@ -67,6 +67,10 @@ class Transaction
 	private
 	def initialize_storage
 		Rails.logger.debug "initialize_storage"
+		unless @company.is_a? Company
+			@company = Company.find_by_name(@company)
+			@errors[:company] = "no such company" if @company.nil?
+		end # company
 		@materials = @materials.map do |material| 
 			if material.is_a? Material
 				material 
