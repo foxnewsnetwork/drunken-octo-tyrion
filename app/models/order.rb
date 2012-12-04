@@ -10,16 +10,21 @@
 #  notes       :text
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  genre       :string(255)      default("sale"), not null
 #
 
 class Order < ActiveRecord::Base
-  # Accountable features:
-  # gross_income, expenses, net_income
+  ###
+  # Scopes
+  ###
+  scope :sold, where(:genre => "sale")
+  scope :purchased, where(:genre => "purchase")
+
+  ###
+  # Accountable
+  ###
+  # features: gross_income, expenses, net_income
   include Accountable
-  attr_accessible :carrier, :external_id, :notes
-  belongs_to :company # buyer
-  belongs_to :plant # seller
-  has_many :materials, :as => :buyable, :include => :buyable
   # from Accountable
   implement_income do |order|
     order.materials.inject(0) do |mem, material| 
@@ -30,6 +35,21 @@ class Order < ActiveRecord::Base
     order.materials.inject(0) { |mem, material| mem -= material.cost if 0 > material.cost  }
   end # expenses
 
+  ###
+  # Attributes
+  ##
+  attr_accessible :carrier, :external_id, :notes
+
+  ###
+  # Relationships
+  ###
+  belongs_to :company # buyer
+  belongs_to :plant # seller
+  has_many :materials, :as => :buyable, :include => :buyable
+
+  ###
+  # Methods
+  ###
   def custom_create params
     quantities = params[:quantities].zip(params[:units]).map do |q|
       { :quantity => q.first, :units => q.last }
@@ -52,7 +72,7 @@ class Orderform
 
   def generate_order plant
     begin
-      order = plant.sells(*@quantities).of(*@materials).at(@prices).to(@company)
+      order = plant.sells(*@quantities).of(*@materials).at(*@prices).to(@company)
     rescue
       nil
     end

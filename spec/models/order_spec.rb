@@ -10,6 +10,7 @@
 #  notes       :text
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  genre       :string(255)      default("sale"), not null
 #
 
 require 'spec_helper'

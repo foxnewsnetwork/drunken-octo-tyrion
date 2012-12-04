@@ -27,11 +27,12 @@ class Company < ActiveRecord::Base
 
   # qs = [quantity, units]
   # qs = [{:quantity => , :units =>}, ...]
+  # note that from the plant's point of view, a 'buy' is a sale
   def buys *qs
   	if qs.first.is_a? Integer or qs.first.is_a? Float and qs.last.is_a? String
-      Transaction.new self, :quantity => qs.first, :units => qs.last
+      Transaction.new self, "sale", :quantity => qs.first, :units => qs.last
     else
-      Transaction.new self, *qs
+      Transaction.new self, "sale", *qs
     end
   end # buys
 end # company

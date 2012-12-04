@@ -33,11 +33,19 @@ class Plant < ActiveRecord::Base
   # qs = [{:quantity => , :units =>}, ...]
   def sells *qs
 		if qs.first.is_a? Integer or qs.first.is_a? Float and qs.last.is_a? String
-			Transaction.new self, :quantity => qs.first, :units => qs.last
+			Transaction.new self, 'sale', :quantity => qs.first, :units => qs.last
 		else
-      Transaction.new self, *qs
+      Transaction.new self, 'sale', *qs
     end
   end # sells
+
+  def buys *qs
+    if qs.first.is_a? Integer or qs.first.is_a? Float and qs.last.is_a? String
+      Transaction.new self, 'purchase', :quantity => qs.first, :units => qs.last
+    else
+      Transaction.new self, 'purchase', *qs
+    end
+  end # buys
 end # Plant
 
 

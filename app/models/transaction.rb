@@ -3,7 +3,7 @@
 ##
 
 class Transaction
-	attr_accessor :plant, :company, :volumes, :storage, :errors
+	attr_accessor :plant, :company, :volumes, :storage, :errors, :genre
 	attr_reader :ready_checks
 
 	def implement_check &block
@@ -12,10 +12,10 @@ class Transaction
 	end # implement_check
 
 	# qs = [{ 100 => 'lbs'}, {200 => 'tons'}]
-	def initialize subject, *qs
+	def initialize subject, genre, *qs
 		initialize_errors
 		initialize_readies
-		initialize_subject subject
+		initialize_subject subject, genre
 		initialize_volumes *qs
 	end # initialize
 
@@ -82,7 +82,14 @@ class Transaction
 			Rails.logger.debug @materials.to_s
 			Rails.logger.debug "Prices List: "
 			Rails.logger.debug @prices.to_s
-			@storage[@materials[k].name] = volumes[k].merge :material => @materials[k], :unit_price => @prices[k]
+			case genre
+			when "sale"
+				@storage[@materials[k].name] = volumes[k].merge :material => @materials[k], :unit_price => @prices[k]
+			when "purchase"
+				@storage[@materials[k].name] = volumes[k].merge :material => @materials[k], :unit_price => -@prices[k]
+			else
+				@errors[:genre] = "bad genre error #{genre}"
+			end # genre
 			@errors.delete :material if @errors.has_key? :material 
 			@errors.delete :price if @errors.has_key? :price 
 		end 
@@ -111,13 +118,15 @@ class Transaction
 		end # check trans
 	end # initialzie_readies
 
-	def initialize_subject subject
+	def initialize_subject subject, g
 		case subject.class.to_s
 		when Plant.to_s
 			@plant = subject
+			@genre = g
 			@errors.delete :plant
 		when Company.to_s
 			@company = subject
+			@genre = g
 			@errors.delete :company
 		else
 			raise "Unrecognized transaction initiator error: #{subject.class.to_s}"
