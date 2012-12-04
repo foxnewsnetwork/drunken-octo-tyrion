@@ -7,9 +7,12 @@
 		=csrf_meta_tags
 		=yield :head
 	%body
+		
 		%section.header
+			=render "shared/header"
 			=yield :header
 		%section.body
 			=yield
 		%section.footer
+			=render "shared/footer"
 			=yield :footer

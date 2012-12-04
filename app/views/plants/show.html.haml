@@ -1,0 +1,9 @@
+-if user_signed_in?
+	-if current_user.level > 4
+		=link_to "edit plant", edit_plant_path( plant)
+%dl
+	-plant.class.attr_accessible[:default].each do |attr|
+		-next if attr.blank?
+		%dt= attr
+		%dd= plant[attr.to_sym]
+

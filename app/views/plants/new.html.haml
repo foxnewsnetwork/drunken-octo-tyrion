@@ -1,0 +1,6 @@
+=form_for( plant ) do |f|
+	-plant.class.attr_accessible[:default].each do |attr|
+		-next if attr.blank?
+		=f.label attr
+		=f.text_field attr
+	=f.submit

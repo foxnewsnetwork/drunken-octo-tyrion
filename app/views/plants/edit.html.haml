@@ -1,0 +1,10 @@
+=form_for( plant, :method => :put ) do |f|
+	-plant.class.attr_accessible[:default].each do |attr|
+		-next if attr.blank? or attr == "founding_date" or attr == "closing_date"
+		=f.label attr
+		=f.text_field attr
+	=f.label "founding_date"
+	=date_select "plant", :founding_date, :start_year => 1776, :default => plant.founding_date
+	=f.label "closing_date"
+	=date_select "plant", :closing_date, :start_year => 1901, :default => plant.closing_date
+	=f.submit
