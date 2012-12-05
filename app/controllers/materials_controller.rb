@@ -1,7 +1,7 @@
 class MaterialsController < ApplicationController
 	respond_to :html, :js, :json
-	expose(:plant)
-	expose(:materials, :ancestor => :plant)
+	expose(:order) # { Order.find(params[:order_id]) }
+	expose(:materials, :ancestor => :order)
 	expose(:material)
 
 	def create

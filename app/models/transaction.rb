@@ -1,8 +1,11 @@
 ##
 # Non-db-backed model
 ##
+# If we ever get big, we might need to persist this into a db
+# instead of just ram
 
 class Transaction
+	include TemporaryRecord
 	attr_accessor :plant, :company, :volumes, :storage, :errors, :genre
 	attr_reader :ready_checks
 
@@ -16,30 +19,36 @@ class Transaction
 		initialize_errors
 		initialize_readies
 		initialize_subject subject, genre
-		initialize_volumes *qs
+		initialize_volumes *qs unless qs.empty?
 	end # initialize
+
+	# stuff = [{:name => , :quantity => , :units => , :price => }]
+	def some *stuff
+		initialize_volumes *(stuff.map { |hash| {:quantity => hash[:quantity], :units => hash[:units]} })
+		self.of *(stuff.map { |hash| hash[:name] })
+		self.at *(stuff.map { |hash| hash[:price] })
+	end # some
 
 	def of *materials
 		Rails.logger.debug "of material"
-		if materials.count != volumes.count
-			@errors[:mismatch] = "Mismatch count error"
-		end # if
-		@materials = materials
+		materials.each do |material|
+			(@materials ||= []) << material
+		end
 		return self
 	end # of
 
 	def at *prices
 		Rails.logger.debug "at price"
-		if prices.count != volumes.count
-			@errors[:mismatch] = "Mismatch price error"
-		end # if
-		@prices = prices
+		prices.each do |price|
+			(@prices ||= []) << price
+		end # prices
 		return self
 	end # price
 
 	def from p 
 		@plant = p
 		@errors.delete :plant 
+		mismatch_check
 		initialize_storage
 		return create_order if ready? 
 		nil
@@ -48,6 +57,7 @@ class Transaction
 	def to c
 		@company = c
 		@errors.delete :company
+		mismatch_check
 		initialize_storage
 		return create_order if ready?
 		nil
@@ -65,6 +75,15 @@ class Transaction
 	end # ready?
 	
 	private
+	def mismatch_check
+		if @materials.count != volumes.count
+			@errors[:mismatch] = "Mismatch count error"
+		end # if
+		if @prices.count > volumes.count
+			@errors[:mismatch] = "Mismatch price error"
+		end # if
+	end # mismatch_check
+
 	def initialize_storage
 		Rails.logger.debug "initialize_storage"
 		unless @company.is_a? Company
@@ -138,7 +157,7 @@ class Transaction
 	end # subject
 
 	def initialize_volumes *qs
-		@volumes = []
+		@volumes ||= []
 		qs.each do |q|
 			unless q.has_key? :quantity and q.has_key? :units
 				throw "bad input exception. Correct format is qs = [{ :quantity => integer, :units => string },...]" 

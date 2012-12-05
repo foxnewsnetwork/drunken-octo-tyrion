@@ -5,6 +5,7 @@ gem 'unicorn', '~>4.4.0'
 gem "devise", "~> 2.1.2"
 gem "haml", "~> 3.1.7"
 gem "decent_exposure", "~> 2.0.0"
+gem "redis", "~>3.0.2"
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 

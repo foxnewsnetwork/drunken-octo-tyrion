@@ -20,6 +20,24 @@ module ControllerMacros
 		end # rank
 	end # level_lookup
 
+	def standard_setup stop=:order
+		before :each do 
+			@plant = FactoryGirl.create :plant
+			next if stop == :plant
+			@company = FactoryGirl.create :company
+			next if stop == :company
+			@material = @plant.materials.create FactoryGirl.attributes_for(:material)
+			next if stop == :material
+			@quantity = 100
+			next if stop == :quantity
+			@units = "pounds"
+			next if stop == :units
+			@price = 100
+			next if stop == :price
+			@order = @plant.sells(@quantity, @units).of(@material).at(@price).to(@company)
+		end # each
+	end # standard_setup
+
   def login_user(level)
 	  case level.class.to_s
 	  when Symbol.to_s
