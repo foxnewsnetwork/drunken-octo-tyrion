@@ -11,9 +11,9 @@ describe TemporaryRecord do
 			include TemporaryRecord
 			attr_accessor :name, :occupation
 
-			def initialize
-				name = "Casper"
-				occupation = "Being a faggot"
+			def initialize n,o
+				name = n
+				occupation = o
 			end # initialize
 
 			def serialize
@@ -27,13 +27,12 @@ describe TemporaryRecord do
 				name
 			end # key
 
-			def deserialize hash
-				name = hash[:name]
-				occupation = hash[:occupation]
+			def self.deserialize hash
+				new hash["name"], hash["occupation"]
 			end # deserialize
 		end # Ghost
 		describe 'correct implementation' do 
-			[:find, :instantiate, :connection].each do |function|
+			[:find, :deserialize, :connection].each do |function|
 				it "should respond_to #{function}" do 
 					Ghost.respond_to?(function).should be_true
 				end # it
@@ -44,7 +43,7 @@ describe TemporaryRecord do
 		end # correct
 		describe "saving-retrieving" do 
 			before :each do 
-				@ghost = Ghost.new
+				@ghost = Ghost.new "casper", "being beta"
 				@ghost.persist
 			end # each
 			it "should allow me to retrieve" do 

@@ -104,11 +104,13 @@ describe Order do
         @adamantium = FactoryGirl.create :material
       end # each
       it "should not let me sell" do 
+        pending "This test has been deprecated because in real life, we often sell stuff we don't have"
         lambda do
           @plant.sells(123, "tons").of(@adamantium).at(100).to(@company)
         end.should_not change(Order, :count)
       end # it
       it "should not let me buy either" do 
+        pending "This test has been deprecated because in real life, we often sell stuff we don't have"
         lambda do
           @company.buys(123, "tons").of(@adamantium).at(100).from(@plant)
         end.should_not change(Order, :count)

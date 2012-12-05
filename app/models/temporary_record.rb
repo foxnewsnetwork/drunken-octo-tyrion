@@ -1,4 +1,4 @@
-
+	
 # Temporary records use redis to connect
 module TemporaryRecord
 	module ClassMethods
@@ -9,16 +9,14 @@ module TemporaryRecord
 		end # connection
 
 		def find key
-			instantiate Hash[connection.hkeys(hash_key key).map do |k|
+			deserialize Hash[connection.hkeys(hash_key key).map do |k|
 				[k, connection.hget(hash_key(key), k)]	
 			end] # each k
 		end # find
 
-		def instantiate hash
-			object = new
-			object.deserialize hash
-			return object
-		end # instantiate
+		def deserialize hash
+			throw "Implement Me!"
+		end # deserialize
 
 		def hash_key key 
 			self.class.to_s + key.to_s
@@ -44,7 +42,5 @@ module TemporaryRecord
 		throw "Implement Me!"
 	end # serialize
 
-	def deserialize hash
-		throw "Implement Me!"
-	end # deserialize
+	
 end # TemporaryRecord
