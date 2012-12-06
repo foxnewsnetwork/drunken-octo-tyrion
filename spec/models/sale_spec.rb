@@ -38,18 +38,24 @@ describe Sale do
 					sale.materials.should_not be_nil
 					sale.materials.should include @material.name
 				end # it
-				describe "double-up" do 
+				describe "triple-up" do 
 					before :each do 
 						@sale.some(:name => "heroin", :quantity => 150, :units => "tons", :price => 1000000).persist
+						@sale.some(:name => "crack", :quantity => 150, :units => "tons", :price => 1000000).persist
 					end # each
 					it "should have 2 materials" do 
-						sale.materials.count.should eq 2
+						sale.materials.count.should eq 3
 					end # it
 					it "should contain heroin" do 
 						sale.materials.should include "heroin"
 					end # it
+					it 'should all match count' do 
+						sale.quantities.count.should eq sale.units.count
+						sale.units.count.should eq sale.prices.count
+						sale.prices.count.should eq sale.materials.count
+					end # it
 					describe "finish" do 
-						let(:order) { @finish }
+						let(:order) { @finish.call }
 						before :each do 
 							@finish = lambda do 
 								sale.to "acme inc"
@@ -62,9 +68,10 @@ describe Sale do
 							@finish.should change(Order, :count).by 1
 						end # it
 						it "should have created material" do 
-							@finish.should change(Material, :count).by 2
+							@finish.should change(Material, :count).by 3
 						end # it
 						it "should have the order" do 
+							order.class.should eq Order
 							order.should_not be_nil
 						end # it
 					end # finish

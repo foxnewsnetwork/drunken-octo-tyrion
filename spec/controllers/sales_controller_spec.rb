@@ -35,7 +35,7 @@ describe SalesController do
         Sale.find( controller.sale.key).should_not be_nil
       end # it
       describe 'materialize' do 
-        # let(:sale) {Sale.find "sale::#{@plant.name}::#{@current_user.id}" }
+        let(:sale) {Sale.find "sale::#{@plant.name}::#{@current_user.id}" }
         before :each do 
           @materialize = lambda do 
             post :material, :plant_id => @plant, :id => @key, :material => @material
@@ -45,11 +45,18 @@ describe SalesController do
           @current_user.id.should_not be_nil
           @plant.name.should_not be_nil
         end # it
+        it "should have matching values" do 
+          @materialize.call
+          controller.sale.materials.count.should eq controller.sale.prices.count
+          controller.sale.prices.count.should eq controller.sale.quantities.count
+          controller.sale.quantities.count.should eq controller.sale.units.count
+          Rails.logger.debug "Units are: #{controller.sale.units}"
+        end # it
         describe "finish" do 
           before :each do 
             @materialize.call
             @finish = lambda do 
-              post :finish, :plant_id => @plant, :id => @key, :company => @company
+              post :finish, :plant_id => @plant, :id => @key, :company => @company.name
             end # finish
           end # each
           it "should create an order" do 

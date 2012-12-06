@@ -5,6 +5,10 @@ class Sale < Transaction
 	end # key
 
 	def initialize plant, *qs
-		super plant, "sale", *qs
+		if 1 == qs.count and qs.first.is_a? String
+			super plant, "sale"
+		else
+			super plant, "sale", *qs
+		end # else
 	end # initialize
 end # sale

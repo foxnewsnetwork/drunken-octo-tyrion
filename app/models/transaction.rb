@@ -23,11 +23,13 @@ class Transaction
 				thing[:name]
 			elsif thing.is_a? String
 				thing
+			elsif thing.responds_to? :id
+				thing[:id]
 			else
 				throw "Serialization has gone wrong #{thing}"
 			end
 		end
-		{ :plant => plant, :company => company, :genre => genre }.each do |k, v|
+		{ :plant => plant, :company => company, :genre => genre , :user => user }.each do |k, v|
 			hash[k] = pull_name.call v unless v.nil? or v.blank?
 		end # each k,v
 		{ :units => units, :materials => materials, :quantities => quantities, :prices => prices }.each do |key, array|
@@ -48,11 +50,13 @@ class Transaction
 			throw "No plant or company error"
 		end
 		throw "Bad data error, no genre" unless hash.has_key? "genre"
-		transaction = Transaction.new subject, hash["genre"]
+		transaction = new subject, hash["genre"]
 		Rails.logger.debug "Deserialization Hash: "
 		Rails.logger.debug hash.to_s
 		hash.each do |k,v|
 			case k
+			when "user"
+				transaction.signed_by User.find_by_name v
 			when "genre"
 				next
 			when "plant"
@@ -91,11 +95,11 @@ class Transaction
 		ready_generate
 	end # initialize
 	def amounts *qs
-		initialize_volumes *qs 
+		initialize_volumes *(qs.map(&:to_f))
 		ready_generate
 	end # quantities
 	def metrics *ms 
-		initialize_volumes *ms 
+		initialize_volumes *(ms.map(&:to_s))
 		ready_generate
 	end # metrics
 	def of *ms 
@@ -107,7 +111,7 @@ class Transaction
 	end # of
 	def at *ps 
 		ps.each do |price|
-			(@prices ||= []) << price
+			(@prices ||= []) << price.to_f
 		end 
 		@errors.delete :price
 		ready_generate
@@ -125,7 +129,9 @@ class Transaction
 		ready_generate
 	end # from
 	def some *stuff
-		initialize_volumes *(stuff.map { |hash| {:quantity => hash[:quantity], :units => hash[:units]} })
+		thing = stuff.map { |hash| {:quantity => hash[:quantity].to_f, :units => hash[:units].to_s} }
+
+		initialize_volumes *thing
 		self.of *(stuff.map { |hash| hash[:name] })
 		self.at *(stuff.map { |hash| hash[:price] })
 		ready_generate

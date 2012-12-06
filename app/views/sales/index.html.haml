@@ -1,3 +1,5 @@
+-if 3 < current_user.level
+	=link_to "New Sales Order", new_plant_sale_path(plant)
 %ul
 	-orders.each do |order|
 		%li= link_to order

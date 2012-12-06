@@ -25,7 +25,9 @@ class SalesController < ApplicationController
 	end # create
 
 	def material
+		Rails.logger.debug "before units: #{sale.units} == quantities: #{sale.quantities}"
 		if sale.some(params[:material]).persist!
+			Rails.logger.debug "after units: #{sale.units} == quantities: #{sale.quantities}"
 			flash[:success] = t(:success, :scope => [:sale, :controller, :material])
 		else
 			raise "problems saving to redis error"
@@ -36,6 +38,7 @@ class SalesController < ApplicationController
 
 	def finish
 		order = sale.to params[:company]
+		throw order unless order.is_a? Order
 		unless order.nil?
 			flash[:success] = t(:success, :scope => [:sale, :controller, :finish])
 		else

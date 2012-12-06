@@ -25,15 +25,5 @@ class OrdersController < ApplicationController
 		end
 	end # destroy
 
-	def approve
-		raise "Approval Not Implemented Exception"
-	end # approve
 
-	def new_input
-		
-	end # new_input
-
-	def new_output
-
-	end # new_output
 end # ordersController
