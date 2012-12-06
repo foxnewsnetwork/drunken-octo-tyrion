@@ -12,8 +12,9 @@ gem "redis", "~>3.0.2"
 gem 'mysql2'
 
 group :development do
-	gem "rspec", "~> 2.12.0"
-	gem 'rspec-rails', "~> 2.12.0"
+	gem "rspec", '~>2.12.0'
+	gem 'rspec-rails', '~>2.12.0'
+  gem "rspec-core", "~> 2.12.1"
 	gem "factory_girl_rails", "~> 4.0"
 	gem 'faker'
 	gem 'annotate', ">=2.5.0.pre1"

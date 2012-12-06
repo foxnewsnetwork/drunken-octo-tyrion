@@ -9,9 +9,11 @@ module TemporaryRecord
 		end # connection
 
 		def find key
-			deserialize Hash[connection.hkeys(hash_key key).map do |k|
-				[k, connection.hget(hash_key(key), k)]	
-			end] # each k
+			Rails.logger.debug "Attempting to find the record at: #{hash_key key}"
+			string = connection.get(hash_key key)
+			raise "Record Not Found Error: #{key}" if string.nil?
+			hash = JSON.parse string
+			deserialize hash
 		end # find
 
 		def deserialize hash
@@ -27,12 +29,18 @@ module TemporaryRecord
 	end # included
 
 	def persist
-		flag = true
-		serialize.each do |k, v|
-			flag &&= self.class.connection.hset self.class.hash_key(key), k, v
-		end # serialize
-		flag
+		self.class.connection.set self.class.hash_key(key), serialize.to_json
 	end # save
+
+	def persist!
+		string = serialize.to_json
+		throw "Bad serialization error" if string.nil?
+		hkey = self.class.hash_key key
+		throw "Bad hash key error" if hkey.nil?
+		Rails.logger.debug "Saving to redis: #{hkey} => #{string}"
+		throw "Unable to save error: #{hkey} => #{string}" unless self.class.connection.set hkey, string
+		self
+	end # persist!
 
 	def key
 		throw "Implement Me!"

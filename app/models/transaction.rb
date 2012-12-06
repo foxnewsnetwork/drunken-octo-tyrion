@@ -11,15 +11,15 @@ class Transaction
 	include TemporaryRecord
 
 	def key
-		"transaction#{plant}#{company}#{genre}"
+		"transaction#{plant.name}#{company}#{genre}#{user.nil? ? 12 : user.id}"
 	end
 
 	def serialize
 		hash = {}
 		pull_name = lambda do |thing| 
-			if thing.responds_to? :name 
+			if thing.respond_to? :name 
 				thing.name 
-			elsif thing.respond_to? :[] and thing[:name]
+			elsif thing.is_a? Hash and thing.has_key? :name
 				thing[:name]
 			elsif thing.is_a? String
 				thing
@@ -27,38 +27,46 @@ class Transaction
 				throw "Serialization has gone wrong #{thing}"
 			end
 		end
-		{ :plant => plant, :company => company }.each do |k, v|
-			hash[k] = v unless v.nil? or v.blank?
+		{ :plant => plant, :company => company, :genre => genre }.each do |k, v|
+			hash[k] = pull_name.call v unless v.nil? or v.blank?
 		end # each k,v
 		{ :units => units, :materials => materials, :quantities => quantities, :prices => prices }.each do |key, array|
-			hash[key] = array.inject("") { |mem, c| mem + "==--==" + c.to_s } unless array.nil? or array.empty?
+			# hash[key] = array.inject("") { |mem, c| mem + c.to_s + "==--==" }.chomp("==--==") unless array.nil? or array.empty?
+			hash[key] = array unless array.nil? or array.empty?
 		end # each key, array
+		Rails.logger.debug "Serialization Hash: "
+		Rails.logger.debug hash.to_s
 		return hash
 	end # serialize
 
 	def self.deserialize hash
 		if hash.has_key? "company"
-			subject = Company.find_by_name :name => hash["company"]
+			subject = Company.find_by_name hash["company"]
+		elsif hash.has_key? "plant"
+			subject = Plant.find_by_name hash["plant"]
 		else
-			subject = Plant.find_by_name :name => hash["plant"]
+			throw "No plant or company error"
 		end
 		throw "Bad data error, no genre" unless hash.has_key? "genre"
-		genre = hash["genre"]	
-		transaction = Transaction.new subject, genre
+		transaction = Transaction.new subject, hash["genre"]
+		Rails.logger.debug "Deserialization Hash: "
+		Rails.logger.debug hash.to_s
 		hash.each do |k,v|
 			case k
+			when "genre"
+				next
 			when "plant"
 				transaction.from Plant.find_by_name v
 			when "company"
 				transaction.to Company.find_by_name v
 			when "materials"
-				transaction.of *(v.split("==--=="))
+				transaction.of *v # *(v.split("==--=="))
 			when "quantities"
-				transaction.amount *(v.split("==--=="))
+				transaction.amounts *v # *(v.split("==--=="))
 			when "prices"
-				transaction.at *(v.split("==--=="))
+				transaction.at *v # *(v.split("==--=="))
 			when "units"
-				transaction.metrics *(v.split("==--=="))
+				transaction.metrics *v # *(v.split("==--=="))
 			else
 				throw "Bad deserialization error, no such key #{k} => #{v}"
 			end # k
@@ -70,6 +78,8 @@ class Transaction
 	# Attr_reader
 	###
 	attr_reader :prices, :quantities, :units, :materials, :plant, :company, :genre, :errors
+	attr_accessor :user
+
 	###
 	# Interface
 	###
@@ -85,7 +95,7 @@ class Transaction
 		ready_generate
 	end # quantities
 	def metrics *ms 
-		initialize_volumes *qs 
+		initialize_volumes *ms 
 		ready_generate
 	end # metrics
 	def of *ms 
@@ -105,13 +115,13 @@ class Transaction
 	def to company 
 		company = Company.find_or_create_by_name(company) unless company.is_a? Company
 		initialize_subject company
-		throw @errors unless @errors.empty?
+		# throw @errors unless @errors.empty?
 		ready_generate
 	end # company
 	def from plant 
 		plant = Plant.find_by_name(plant) unless plant.is_a? Plant
 		initialize_subject plant
-		throw @errors unless @errors.empty?
+		# throw @errors unless @errors.empty?
 		ready_generate
 	end # from
 	def some *stuff
@@ -120,6 +130,10 @@ class Transaction
 		self.at *(stuff.map { |hash| hash[:price] })
 		ready_generate
 	end # some
+	def signed_by user
+		@user = user
+		ready_generate
+	end # user
 
 	private
 	def initialize_errors
@@ -178,7 +192,6 @@ class Transaction
 		flag = @ready_checks.inject(true) do |mem, check|
 			mem &&= check.call self
 		end # check
-		flag
 	end # all_ready?
 	def create_order
 		order = @company.orders.new
