@@ -1,64 +1,64 @@
 require 'spec_helper'
 
-describe Sale do 
+describe Purchase do 
 	describe "Sanity" do 
 		it "should be there" do 
-			Sale.should_not be_nil
+			Purchase.should_not be_nil
 		end # it
 	end # sanity
 	describe "creation" do 
 		standard_setup :price
 		before :each do 
 			@user = FactoryGirl.create :user, :level => 4
-			@sale = Sale.new( @plant).signed_by @user
+			@purchase = Purchase.new( @plant).signed_by @user
 		end # each
 		it "should be there" do 
-			@sale.should_not be_nil
+			@purchase.should_not be_nil
 		end # it
 		it "should get the right key" do 
-			@sale.key.should eq "sale-#{@plant.id}-#{@user.id}"
+			@purchase.key.should eq "purchase-#{@plant.id}-#{@user.id}"
 		end # it
 		describe "sales persistance" do 
-			let(:sale) { Sale.find @sale.key }
+			let(:purchase) { Purchase.find @purchase.key }
 			before :each do 
-				@sale.persist
+				@purchase.persist
 			end # each
-			it "should get the sale back out" do 
-				sale.plant.should eq @plant
-				sale.genre.should eq @sale.genre
+			it "should get the purchase back out" do 
+				purchase.plant.should eq @plant
+				purchase.genre.should eq @purchase.genre
 			end # it
 			describe "material" do 
 				before :each do 
-					@sale.some(:name => @material.name, :quantity => 100, :units => "pounds", :price => 10).persist
+					@purchase.some(:name => @material.name, :quantity => 100, :units => "pounds", :price => 10).persist
 				end # each
-				it "should have the sale" do 
-					sale.should_not be_nil
+				it "should have the purchase" do 
+					purchase.should_not be_nil
 				end # it
 				it "should have the materials" do 
-					sale.materials.should_not be_nil
-					sale.materials.should include @material.name
+					purchase.materials.should_not be_nil
+					purchase.materials.should include @material.name
 				end # it
 				describe "triple-up" do 
 					before :each do 
-						@sale.some(:name => "heroin", :quantity => 150, :units => "tons", :price => 1000000).persist
-						@sale.some(:name => "crack", :quantity => 150, :units => "tons", :price => 1000000).persist
+						@purchase.some(:name => "heroin", :quantity => 150, :units => "tons", :price => 1000000).persist
+						@purchase.some(:name => "crack", :quantity => 150, :units => "tons", :price => 1000000).persist
 					end # each
 					it "should have 2 materials" do 
-						sale.materials.count.should eq 3
+						purchase.materials.count.should eq 3
 					end # it
 					it "should contain heroin" do 
-						sale.materials.should include "heroin"
+						purchase.materials.should include "heroin"
 					end # it
 					it 'should all match count' do 
-						sale.quantities.count.should eq sale.units.count
-						sale.units.count.should eq sale.prices.count
-						sale.prices.count.should eq sale.materials.count
+						purchase.quantities.count.should eq purchase.units.count
+						purchase.units.count.should eq purchase.prices.count
+						purchase.prices.count.should eq purchase.materials.count
 					end # it
 					describe "finish" do 
 						let(:order) { @finish.call }
 						before :each do 
 							@finish = lambda do 
-								sale.to "acme inc"
+								purchase.to "acme inc"
 							end # each
 						end # each
 						it "should create a company" do 
@@ -79,4 +79,4 @@ describe Sale do
 			end # material
 		end # progression
 	end # creation
-end # Sale
+end # purchase

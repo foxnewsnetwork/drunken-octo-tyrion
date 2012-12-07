@@ -8,6 +8,12 @@ module TemporaryRecord
 			Redis.new :host => "127.0.0.1", :port => 6379
 		end # connection
 
+		def exist? key
+			Rails.logger.debug "Attempting to check the exist of the key #{hash_key key}"
+			return false if key.nil?
+			connection.exists hash_key key
+		end # key
+
 		def find key
 			Rails.logger.debug "Attempting to find the record at: #{hash_key key}"
 			string = connection.get(hash_key key)
@@ -21,12 +27,20 @@ module TemporaryRecord
 		end # deserialize
 
 		def hash_key key 
-			self.class.to_s + key.to_s
+			self.to_s + key.to_s
 		end # generate_key
 	end # class
 	def self.included(base)
 		base.extend ClassMethods
 	end # included
+
+	def new_record?
+		self.class.connection.exists self.class.hash_key key
+	end # new_record
+
+	def delete
+		self.class.connection.del self.class.hash_key key
+	end # delete
 
 	def persist
 		self.class.connection.set self.class.hash_key(key), serialize.to_json

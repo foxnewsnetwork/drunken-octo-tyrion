@@ -12,6 +12,7 @@ describe SalesController do
     end
   end
   describe "creation" do 
+    let(:key) { "sale-#{@plant.id}-#{@current_user.id}"  }
   	before :each do 
   		@company = FactoryGirl.create :company
       @material = {
@@ -20,25 +21,23 @@ describe SalesController do
         :units => "pounds" ,
         :price => 2000
       } # material
-  		@create = lambda do 
-  			post :create, :plant_id => @plant
-  		end # create
+      @create = lambda do 
+        post :start, :plant_id => @plant, :id => key
+      end # create
   	end # each
   	context "as sales" do 
   		login_user :sales
       before :each do 
-        @key = "sale::#{@plant.name}::#{@current_user.id}" 
         @create.call
       end # each
-      it "should change the database" do 
-        
-        Sale.find( controller.sale.key).should_not be_nil
+      it "should change the database" do         
+        Sale.find(key).should_not be_nil
       end # it
       describe 'materialize' do 
-        let(:sale) {Sale.find "sale::#{@plant.name}::#{@current_user.id}" }
+        let(:sale) {Sale.find key }
         before :each do 
           @materialize = lambda do 
-            post :material, :plant_id => @plant, :id => @key, :material => @material
+            post :material, :plant_id => @plant, :id => key, :material => @material
           end # lambda
         end # each
         it "should not have a null key" do 
@@ -56,7 +55,7 @@ describe SalesController do
           before :each do 
             @materialize.call
             @finish = lambda do 
-              post :finish, :plant_id => @plant, :id => @key, :company => @company.name
+              post :finish, :plant_id => @plant, :id => key, :company => @company.name
             end # finish
           end # each
           it "should create an order" do 

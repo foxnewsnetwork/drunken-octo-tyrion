@@ -9,7 +9,7 @@ class Transaction
 	# TemporaryRecord
 	###
 	include TemporaryRecord
-
+	alias_method :id, :key
 	def key
 		"transaction#{plant.name}#{company}#{genre}#{user.nil? ? 12 : user.id}"
 	end
@@ -82,7 +82,7 @@ class Transaction
 	# Attr_reader
 	###
 	attr_reader :prices, :quantities, :units, :materials, :plant, :company, :genre, :errors
-	attr_accessor :user
+	attr_accessor :user, :params
 
 	###
 	# Interface
@@ -140,6 +140,10 @@ class Transaction
 		@user = user
 		ready_generate
 	end # user
+	def with_header params
+		@params = params
+		ready_generate
+	end # params
 
 	private
 	def initialize_errors
@@ -172,6 +176,7 @@ class Transaction
 			@company = subject 
 			@errors.delete :company
 		end
+		@params = {}
 		@genre = genre unless genre.nil?
 	end # intialize_subjects
 	def initialize_volumes *qs
@@ -200,7 +205,8 @@ class Transaction
 		end # check
 	end # all_ready?
 	def create_order
-		order = @company.orders.new
+		order = @company.orders.new( params )
+		order.genre = genre
 		order.plant_id = @plant.id 
 		if order.save
 			get_name = lambda do |m|

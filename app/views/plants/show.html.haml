@@ -3,6 +3,7 @@
 		%ul
 			%li=link_to "edit plant", edit_plant_path( plant)
 			%li=link_to "Sales", plant_sales_path(plant)
+			%li=link_to "Purchases", plant_purchases_path(plant)
 			%li=link_to "Inventory", plant_materials_path(plant)
 	-if current_user.level > 5
 		%h1= "Expenses: #{plant.expenses}"

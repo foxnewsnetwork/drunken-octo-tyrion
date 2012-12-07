@@ -1,7 +1,7 @@
 # The sale class is an intermediary between transaction and controller
 class Sale < Transaction
 	def key
-		"sale::" + plant.name.to_s + "::" + user.id.to_s
+		"sale-" + plant.id.to_s + "-" + user.id.to_s
 	end # key
 
 	def initialize plant, *qs

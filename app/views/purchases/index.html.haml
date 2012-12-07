@@ -1,0 +1,6 @@
+-if 3 < current_user.level
+	=link_to "New Purchase Order", new_plant_purchase_path(plant)
+%ul
+	-orders.each do |purchase|
+		%li= link_to purchase.created_at, order_path(purchase)
+

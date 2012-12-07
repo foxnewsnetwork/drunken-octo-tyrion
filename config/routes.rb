@@ -13,13 +13,20 @@ Unfactory::Application.routes.draw do
 
   resources :plants do 
     resources :materials, :only => [:index]
-    resources :sales, :only => [:index, :create, :new] do 
+    resources :sales, :only => [:index, :new] do 
       member do 
         post :material
         post :finish
+        post :start
       end # member
     end # resources
-    resources :purchases, :only => [:index, :create, :new]
+    resources :purchases, :only => [:index, :new] do 
+      member do 
+        post :material
+        post :finish
+        post :start
+      end # member
+    end # resources
   end # plants
 
   ['about','faq'].each do |path|

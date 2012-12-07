@@ -5,24 +5,24 @@ class SalesController < ApplicationController
 		sales = plant.orders.where(:genre => "sale")
 	end # orders
 	expose( :sale ) do
-		if params.has_key? :id
+		if Sale.exist? params[:id]
 			Sale.find params[:id]
 		else  
 			raise "User Not Signed In Error" unless user_signed_in?
-			plant.sells.signed_by(current_user)
+			plant.sells.signed_by(current_user).persist!
 		end
 	end # sale
 	before_filter :allow_sales
 
-	def create
+	def start
 		if sale.persist!
-			flash[:success] = t(:success, :scope => [:sale, :controller, :create])
+			flash[:success] = t(:success, :scope => [:sale, :controller, :start])
 		else
 			raise "problems saving to redis error"
-			flash[:error] = t(:error, :scope => [:sale, :controller, :create])
+			flash[:error] = t(:error, :scope => [:sale, :controller, :start])
 		end 			
 		respond_with sale	
-	end # create
+	end # start
 
 	def material
 		Rails.logger.debug "before units: #{sale.units} == quantities: #{sale.quantities}"
@@ -41,6 +41,7 @@ class SalesController < ApplicationController
 		throw order unless order.is_a? Order
 		unless order.nil?
 			flash[:success] = t(:success, :scope => [:sale, :controller, :finish])
+			sale.delete
 		else
 			raise "Problems finalizing the sales order"
 			flash[:error] = t(:error, :scope => [:sale, :controller, :finish])

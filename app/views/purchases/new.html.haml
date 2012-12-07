@@ -1,20 +1,20 @@
-=form_tag start_plant_sale_path(plant, sale.key) do
-	%legend Sales order header
+=form_tag start_plant_purchase_path(plant, sale.key) do
+	%legend Purchase order header
 	%fieldset
 		%h2 content coming soon!
 	%fieldset.form-actions
-		=submit_tag "New Sales Order"
+		=submit_tag "New Purchase order"
 
 -unless params[:id].nil?
 	%h5= "id: " + params[:id] 
 	%dl
-	-sale.serialize.each do |key, val|
+	-purchase.serialize.each do |key, val|
 		%dt= key
 		%dd= val
 
 
-	=form_tag material_plant_sale_path(plant, sale.key) do
-		%legend Sales order materials
+	=form_tag material_plant_purchase_path(plant, purchase.key) do
+		%legend Purchase order materials
 		%fieldset
 			=label_tag "material_name", "Material Name"
 			=text_field_tag "material[name]"
@@ -27,8 +27,8 @@
 		%fieldset.form-actions
 			=submit_tag "add material"
 
-	=form_tag finish_plant_sale_path(plant, sale.key) do
-		%legend Sale order finish
+	=form_tag finish_plant_purchase_path(plant, purchase.key) do
+		%legend Purchase order finish
 		%fieldset
 			=label_tag "company", "Company"
 			=text_field_tag "company"
