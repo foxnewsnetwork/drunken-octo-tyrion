@@ -2,7 +2,7 @@ class SalesController < ApplicationController
 	respond_to :html, :js, :json
 	expose :plant
 	expose :orders, :ancestor => :plant do 
-		plant.orders.where(:genre => "sales")
+		sales = plant.orders.where(:genre => "sale")
 	end # orders
 	expose( :sale ) do
 		if params.has_key? :id

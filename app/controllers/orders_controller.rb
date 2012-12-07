@@ -1,6 +1,4 @@
 class OrdersController < ApplicationController
-	expose(:plant) 
-	expose :orders, :ancestor => :plant
 	expose :order
 	before_filter :allow_sales, :only => [:create, :update, :destroy]
 	before_filter :allow_management, :only => [:approve]

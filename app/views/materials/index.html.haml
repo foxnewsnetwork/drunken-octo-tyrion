@@ -1,12 +1,19 @@
-%h1= plant.name
+=link_to plant_path(plant) do
+	%h1= plant.name + " Materials"
+
+=form_tag plant_materials_path(plant), :method => :get do
+	=label_tag "start_date", "Start Date"
+	=select_date starting, :prefix => :start, :start_year => 1900, :end_year => DateTime.now.year
+	=label_tag "end_date", "End Date"
+	=select_date ending, :prefix => :end, :start_year => 1900, :end_year => DateTime.now.year
+	=submit_tag "Search"
+%h1 Outgoing
 %ul
-	-if current_user.level > 6
-		%li=link_to "Direct Material Creation", new_plant_material_path(plant)
-	-if current_user.level > 2
-		%li=link_to "New material purchase", new_plant_sale_path(plant)
-		%li=link_to "New material sales", new_plant_purchase_path(plant)
-%ul
-	-materials.each do |material|
+	-sales.each do |name, amount|
 		%li
-			%h5=link_to material.name, plant_material_path(material)
-			%p= material.quantity.to_s + " " + material.units
+			%dl
+				%dt= name
+				%dd= amount
+
+
+%h1 Incoming

@@ -7,13 +7,12 @@ Unfactory::Application.routes.draw do
     resources :orders, :except => [:create, :destroy, :new]
   end # companies
 
-  resources :orders do 
+  resources :orders, :except => [:create, :new] do 
     resources :materials
   end # orders
 
   resources :plants do 
-    resources :materials
-    resources :orders, :except => [:create, :index, :new]
+    resources :materials, :only => [:index]
     resources :sales, :only => [:index, :create, :new] do 
       member do 
         post :material

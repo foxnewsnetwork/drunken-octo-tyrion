@@ -2,15 +2,26 @@ class MaterialsController < ApplicationController
 	respond_to :html, :js, :json
 	# expose(:order) # { Order.find(params[:order_id]) }
 	expose(:plant)
-	expose(:materials, :ancestor => :plant)
-	expose(:material)
+	expose(:starting) do 
+		s = Date.civil(params[:start][:year].to_i, params[:start][:month].to_i, params[:start][:day].to_i) if params.has_key? :start 
+		s ||= 100.years.ago
+	end
+	expose(:ending) do 
+		e = Date.civil(params[:end][:year].to_i, params[:end][:month].to_i, params[:end][:day].to_i) if params.has_key? :end 
+		e ||= DateTime.now
+	end
+	expose(:sales) do
+		plant.orders.sales.from(starting).to(ending).inject({}) do |mem, sale|
+			sale.materials.inject(mem) do |mem, material|
+				if mem.has_key? material.name
+					mem[material.name] += Mass.new material.quantity, material.units
+				else
+					mem[material.name] = Mass.new material.quantity, material.units
+				end # if
+				mem
+			end # reduce
+			mem
+		end # reduce
+	end # ecpose
 
-	# def create
-	# 	if material.save
-	# 		flash[:success] = t(:success, :scope => [:material, :controller, :create])
-	# 	else
-	# 		flash[:error] = t(:error, :scope => [:material, :controller, :create])
-	# 	end
-	# 	respond_with material
-	# end # create
 end # Materials

@@ -1,0 +1,12 @@
+=link_to plant_path order.plant do
+	%h1= order.plant.name
+%h3=order.net_income
+%ul
+	-order.materials.each do |material|
+		%li
+			%dl
+				-material.class.attr_accessible[:default].map(&:to_sym).each do |attr|
+					-next if attr == :""
+					%dt= attr
+					%dd= material[attr]
+

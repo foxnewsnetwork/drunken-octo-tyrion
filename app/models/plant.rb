@@ -19,7 +19,20 @@ class Plant < ActiveRecord::Base
   include Accountable
   attr_accessible :name, :country, :state, :city, :address, :sqft, :founding_date, :closing_date
   has_many :materials, :as => :buyable
-  has_many :orders
+  has_many :orders do 
+    def sales
+      where(:genre => "sale")
+    end # sales
+    def purchases
+      where(:genre => "purchase")
+    end # purchases
+    def from time
+      where("created_at > ?", time || 100.years.ago)
+    end # from
+    def to time
+      where("created_at < ?", time || 1.second.ago)
+    end # to
+  end # orders
 
   # Accountable package
   implement_income do |plant|
@@ -46,6 +59,7 @@ class Plant < ActiveRecord::Base
       Purchase.new self, *qs
     end
   end # buys
+
 end # Plant
 
 
