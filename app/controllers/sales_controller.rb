@@ -2,7 +2,9 @@ class SalesController < ApplicationController
 	respond_to :html, :js, :json
 	expose :plant
 	expose :orders, :ancestor => :plant do 
-		sales = plant.orders.where(:genre => "sale")
+		search = { :genre => "sale" }
+		search[:company_id] = params[:company_id] unless params[:company_id].nil?
+		sales = plant.orders.where(search)
 	end # orders
 	expose( :sale ) do
 		if Sale.exist? params[:id]

@@ -64,6 +64,20 @@ describe SalesController do
           it "should create some heroin" do 
             @finish.should change(Material, :count).by 1
           end # it
+          describe "Get Index Search" do
+            before :each do 
+              @finish.call
+            end # each 
+            it "should allow search" do 
+              get 'index', :plant_id => @plant.id, :company_id => @company.id
+              controller.orders.count.should eq 1
+              controller.orders.first.company.name.should eq @company.name
+            end # it
+            it "should allow search" do 
+              get 'index', :plant_id => @plant.id, :company_id => 11454565784164164
+              controller.orders.count.should eq 0
+            end # it
+          end # index search
         end # finish
       end # materialize
   	end # as sales

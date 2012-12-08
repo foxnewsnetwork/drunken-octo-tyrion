@@ -64,6 +64,19 @@ describe PurchasesController do
 					it "should create some heroin" do 
 						@finish.should change(Material, :count).by 1
 					end # it
+					describe "search" do 
+						before :each do 
+							@finish.call
+						end # each
+						it "should permit search" do 
+							get "index", :plant_id => @plant.id, :company_id => @company.id
+							controller.orders.count.should eq 1
+						end # it
+						it "should permit search" do 
+							get "index", :plant_id => @plant.id, :company_id => (@company.id + 10)
+							controller.orders.count.should eq 0
+						end # it
+					end # search
 				end # finish
 			end # materialize
 		end # as sales

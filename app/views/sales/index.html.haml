@@ -1,6 +1,10 @@
 -if 3 < current_user.level
 	=link_to "New Sales Order", new_plant_sale_path(plant)
+%h2 Filter by companies:
+%ul
+	-orders.each do |order|
+		%li=link_to order.company.name, "?company_id=#{order.company_id}"
 %ul
 	-orders.each do |sale|
-		%li= link_to sale.created_at, order_path(sale)
+		%li= link_to "#{sale.company.name} -- #{sale.created_at}", order_path(sale)
 
