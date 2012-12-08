@@ -25,6 +25,9 @@ module UsersHelper
 			user.level > 7
 		end , # level 7 - data admin
 	] # user_filters
+	def allow_accounting
+		filter_to 4
+	end # allow_accounting
 	def allow_management
 		filter_to 5
 	end # allow_management
