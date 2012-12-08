@@ -9,11 +9,22 @@
 #
 
 class Company < ActiveRecord::Base
-  include Accountable
+  ###
+  # Attributes
+  ###
   attr_accessible :name
-  has_many :orders
 
+  ###
+  # Relationships
+  ###
+  has_many :orders
+  has_many :outgoing_invoices, :as => :receivable, :class_name => "Invoice"
+  has_many :incoming_invoices, :as => :payable, :class_name => "Invoice"
+
+  ###
   # Accountable module
+  ###
+  include Accountable
   implement_income do |company|
     company.orders.inject(0) do |mem, order| 
       mem += order.expenses
@@ -25,6 +36,9 @@ class Company < ActiveRecord::Base
     end
   end # implement_expenses
 
+  ###
+  # Methods
+  ###
   # qs = [quantity, units]
   # qs = [{:quantity => , :units =>}, ...]
   # note that from the plant's point of view, a 'buy' is a sale

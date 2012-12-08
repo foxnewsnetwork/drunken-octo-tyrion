@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121204160001) do
+ActiveRecord::Schema.define(:version => 20121208145734) do
 
   create_table "companies", :force => true do |t|
     t.string   "name"
@@ -20,6 +20,33 @@ ActiveRecord::Schema.define(:version => 20121204160001) do
   end
 
   add_index "companies", ["name"], :name => "index_companies_on_name", :unique => true
+
+  create_table "connections", :force => true do |t|
+    t.integer  "invoice_id"
+    t.integer  "order_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "connections", ["invoice_id"], :name => "index_connections_on_invoice_id"
+  add_index "connections", ["order_id"], :name => "index_connections_on_order_id"
+
+  create_table "invoices", :force => true do |t|
+    t.string   "genre"
+    t.text     "notes"
+    t.string   "pay_method"
+    t.decimal  "amount",          :precision => 12, :scale => 2
+    t.integer  "payable_id"
+    t.string   "payable_type"
+    t.integer  "receivable_id"
+    t.string   "receivable_type"
+    t.string   "status",                                         :default => "out", :null => false
+    t.datetime "created_at",                                                        :null => false
+    t.datetime "updated_at",                                                        :null => false
+  end
+
+  add_index "invoices", ["payable_id", "payable_type"], :name => "ion_pid_ptype"
+  add_index "invoices", ["receivable_id", "receivable_type"], :name => "ion_rid_rtype"
 
   create_table "materials", :force => true do |t|
     t.string   "name"

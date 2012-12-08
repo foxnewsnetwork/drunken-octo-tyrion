@@ -1,5 +1,6 @@
 Unfactory::Application.routes.draw do
 
+  resources :invoices, :only => [:show, :edit, :update]
   devise_for :users
   resources :users, :only => [:show, :edit, :update]
   
@@ -9,24 +10,21 @@ Unfactory::Application.routes.draw do
 
   resources :orders, :except => [:create, :new] do 
     resources :materials
+    resources :invoices, :only => [:index]
   end # orders
 
-  resources :plants do 
+  resources :plants do
+    resources :invoices, :only => [:create, :new, :index] 
     resources :materials, :only => [:index]
-    resources :sales, :only => [:index, :new] do 
-      member do 
-        post :material
-        post :finish
-        post :start
-      end # member
-    end # resources
-    resources :purchases, :only => [:index, :new] do 
-      member do 
-        post :material
-        post :finish
-        post :start
-      end # member
-    end # resources
+    [:sales, :purchases].each do |transaction|
+      resources transaction, :only => [:index, :new] do 
+        member do 
+          post :material
+          post :finish
+          post :start
+        end # member
+      end # resources
+    end # transaction
   end # plants
 
   ['about','faq'].each do |path|

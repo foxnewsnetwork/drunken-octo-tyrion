@@ -46,7 +46,9 @@ class Order < ActiveRecord::Base
   belongs_to :company # buyer
   belongs_to :plant # seller
   has_many :materials, :as => :buyable, :include => :buyable, :dependent => :destroy
-
+  has_many :connections
+  has_many :invoices, :through => :connections
+  
   ###
   # Methods
   ###

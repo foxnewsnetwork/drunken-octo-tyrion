@@ -16,8 +16,16 @@
 #
 
 class Plant < ActiveRecord::Base
-  include Accountable
+  ###
+  # Attributes
+  ###
   attr_accessible :name, :country, :state, :city, :address, :sqft, :founding_date, :closing_date
+  
+  ###
+  # Relationships
+  ###
+  has_many :outgoing_invoices, :as => :receivable, :class_name => "Invoice"
+  has_many :incoming_invoices, :as => :payable, :class_name => "Invoice"
   has_many :materials, :as => :buyable
   has_many :orders do 
     def sales
@@ -34,7 +42,10 @@ class Plant < ActiveRecord::Base
     end # to
   end # orders
 
+  ###
   # Accountable package
+  ###
+  include Accountable
   implement_income do |plant|
     plant.orders.inject(0) { |mem, order| mem += order.gross_income }
   end # income
@@ -42,6 +53,9 @@ class Plant < ActiveRecord::Base
     plant.orders.inject(0) { |mem, order| mem += order.expenses }
   end # expenses
 
+  ###
+  # Methods
+  ###
   # qs = [quantity, units]
   # qs = [{:quantity => , :units =>}, ...]
   def sells *qs
@@ -59,6 +73,29 @@ class Plant < ActiveRecord::Base
       Purchase.new self, *qs
     end
   end # buys
+
+  alias_method :predicted_income, :net_income
+  alias_method :predicted_expenses, :expenses
+  
+  def actual_income
+    outgoing_invoices.where(:status => "deposited").inject(0) do |mem, invoice|
+      mem += invoice.amount
+    end # inject invoice
+  end # actual_income
+
+  def expected_income
+    outgoing_invoices.inject(0) { |m,i| m += i.amount }
+  end # received_income
+
+  def actual_expenses
+    incoming_invoices.where(:status => "paid").inject(0) do |mem, invoice|
+      mem += invoice.amount
+    end # inject invoice
+  end # actual_expenses
+
+  def expected_expenses
+    incoming_invoices.inject(0) { |m,i| m += i.amount }
+  end # expected_expenses
 
 end # Plant
 
