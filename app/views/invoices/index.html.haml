@@ -1,0 +1,8 @@
+-if parent.is_a? Plant
+	=link_to "New Outgoing Invoice", new_outgoing_plant_invoices_path(parent)
+	=link_to "New Incoming Invoice", new_incoming_plant_invoices_path(parent)
+-invoices.each do |key, ivs|
+	%h3= key
+	%ul
+		-ivs.each do |inv|
+			%li= link_to "#{inv.created_at} -- #{inv.amount}", invoice_path( inv)

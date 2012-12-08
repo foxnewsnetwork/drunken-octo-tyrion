@@ -1,0 +1,13 @@
+=form_for invoice do |f|
+	%legend Incoming Invoice Form
+	%fieldset
+		=f.label :pay_method
+		=f.select :pay_method, options_for_select(['cash','check','money-order','credit','debit','other'])
+		=f.label :amount
+		=f.number_field :amount
+		=f.label :status
+		=f.select :status, options_for_select(['incomplete','unpaid','paid','redacted'])
+		=f.label :notes
+		=f.text_area :notes, :size => "40x5"
+	%fieldset.form-action
+		=f.submit

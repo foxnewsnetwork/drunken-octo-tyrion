@@ -5,6 +5,7 @@
 			%li=link_to "Sales", plant_sales_path(plant)
 			%li=link_to "Purchases", plant_purchases_path(plant)
 			%li=link_to "Inventory", plant_materials_path(plant)
+			%li=link_to "Invoices", plant_invoices_path(plant)
 	-if current_user.level > 5
 		%h1= "Expenses: #{plant.expenses}"
 		%h1= "Gross Income: #{plant.gross_income}"

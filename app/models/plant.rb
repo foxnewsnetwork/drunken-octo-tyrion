@@ -24,6 +24,7 @@ class Plant < ActiveRecord::Base
   ###
   # Relationships
   ###
+  has_many :invoices
   has_many :outgoing_invoices, :as => :receivable, :class_name => "Invoice"
   has_many :incoming_invoices, :as => :payable, :class_name => "Invoice"
   has_many :materials, :as => :buyable

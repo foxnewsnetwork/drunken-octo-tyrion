@@ -30,10 +30,12 @@ class InvoicesController < ApplicationController
 		end
 	end # invoices
 	expose(:invoice) do 
-		if params[:id].nil?
-			Invoice.new params[:invoice]
+		if params.has_key? :id
+			i = Invoice.find params[:id]
+		elsif parent.is_a? Plant
+			parent.invoices.new( params[:invoice] )
 		else
-			Invoice.find params[:id]
+			nil
 		end
 	end # invoice
 

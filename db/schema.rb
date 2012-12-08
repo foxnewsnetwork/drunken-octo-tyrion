@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121208145734) do
+ActiveRecord::Schema.define(:version => 20121208222457) do
 
   create_table "companies", :force => true do |t|
     t.string   "name"
@@ -32,7 +32,7 @@ ActiveRecord::Schema.define(:version => 20121208145734) do
   add_index "connections", ["order_id"], :name => "index_connections_on_order_id"
 
   create_table "invoices", :force => true do |t|
-    t.string   "genre"
+    t.integer  "plant_id"
     t.text     "notes"
     t.string   "pay_method"
     t.decimal  "amount",          :precision => 12, :scale => 2

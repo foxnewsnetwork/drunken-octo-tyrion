@@ -3,7 +3,7 @@
 # Table name: invoices
 #
 #  id              :integer          not null, primary key
-#  genre           :string(255)
+#  plant_id        :integer
 #  notes           :text
 #  pay_method      :string(255)
 #  amount          :decimal(12, 2)

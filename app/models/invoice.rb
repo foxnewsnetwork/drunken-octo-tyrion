@@ -3,7 +3,7 @@
 # Table name: invoices
 #
 #  id              :integer          not null, primary key
-#  genre           :string(255)
+#  plant_id        :integer
 #  notes           :text
 #  pay_method      :string(255)
 #  amount          :decimal(12, 2)
@@ -20,13 +20,14 @@ class Invoice < ActiveRecord::Base
 	###
 	# Attributes
 	###
-	attr_accessible :genre, :notes, :pay_method, :amount, :status
+	attr_accessible :notes, :pay_method, :amount, :status
 
 	###
 	# Relationships
 	###
 	has_many :connections
 	has_many :orders, :through => :connections
+	belongs_to :plant
 	belongs_to :payable, :polymorphic => true
 	belongs_to :receivable, :polymorphic => true
 

@@ -1,0 +1,8 @@
+-if invoice.payable.nil?
+	=form_tag invoice.plant_id do
+		=label_tag :company_id, "company id"
+		=text_field_tag "company_id"
+%dl
+	-invoice.attributes.each do |key, val|
+		%dt= key
+		%dd= val
