@@ -1,0 +1,8 @@
+=label_tag :pay_method, "pay method"
+=select_tag "invoice[pay_method]", options_for_select(['cash','check','money-order','credit','debit','other'])
+=label_tag :amount, "amount"
+=number_field_tag :amount
+=label_tag :status, "status"
+=select_tag "invoice[status]", options_for_select(['incomplete','unpaid','paid','redacted'])
+=label_tag :notes, "notes"
+=text_area_tag "invoice[notes]", "", :size => "40x5"

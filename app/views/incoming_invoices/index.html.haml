@@ -1,0 +1,5 @@
+=link_to "New Incoming Invoice", new_plant_incoming_invoice_path(plant)
+%h3 Incoming Invoices
+%ul
+	-incomings.each do |invoice|
+		%li= link_to "#{invoice.created_at} -- #{invoice.amount}", invoice_path( invoice)

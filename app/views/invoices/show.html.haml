@@ -1,7 +1,28 @@
+-if invoice.receivable.nil?
+	=form_tag from_plant_incoming_invoice_path(invoice.payable, invoice) do
+		%legend Incoming Invoice
+		=label_tag :company_id, "To company name"
+		=text_field_tag "company_name"
+		=label_tag :plant_id, "from plant name"
+		=text_field_tag "plant_name", invoice.payable.name, :disabled => "disabled"
+		=submit_tag
 -if invoice.payable.nil?
-	=form_tag invoice.plant_id do
-		=label_tag :company_id, "company id"
-		=text_field_tag "company_id"
+	=form_tag to_plant_outgoing_invoice_path(invoice.receivable, invoice) do
+		%legend Outgoing Invoice
+		=label_tag :plant_id, "From plant name"
+		=text_field_tag "plant_id", invoice.receivable.name, :disabled => "disabled"
+		=label_tag :company_id, "to company name"
+		=text_field_tag "company_name"
+		=submit_tag
+%h3 Assocated orders
+=form_tag connect_invoice_path(invoice) do 
+	=label_tag :order_id, "Order id"
+	=text_field_tag :order_id
+	=submit_tag
+%ul
+	-invoice.orders.each do |order|
+		%li= link_to "#{order.created_at} -- #{order.id}", order_path(order)
+
 %dl
 	-invoice.attributes.each do |key, val|
 		%dt= key

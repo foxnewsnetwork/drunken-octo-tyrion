@@ -20,7 +20,7 @@ class Invoice < ActiveRecord::Base
 	###
 	# Attributes
 	###
-	attr_accessible :notes, :pay_method, :amount, :status
+	attr_accessible :notes, :pay_method, :amount, :status, :plant_id
 
 	###
 	# Relationships
