@@ -56,11 +56,17 @@ describe InvoicesController do
 					put :update, :id => @invoice.id, :invoice => @attributes
 				end # update
 			end # each
+			it "not be null" do 
+				@invoice.should_not be_nil
+				@invoice.id.should_not be_nil
+			end # it
 			it "should change the invoice" do
-				@update.should change(controller.invoice, :amount).to(BigDecimal.new 1)
+				@update.call
+				controller.invoice.amount.to_s.should eq 1.0.to_s
 			end # it
 			it "should change the notes" do 
-				@update.should change(controller.invoice, :notes).to "some bs"
+				@update.call
+				controller.invoice.notes.should eq "some bs"
 			end # it
 		end # update
 	end # put

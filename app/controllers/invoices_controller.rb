@@ -31,10 +31,11 @@ class InvoicesController < ApplicationController
 	end # invoices
 	expose(:invoice) do 
 		if params.has_key? :id
-			i = Invoice.find params[:id]
+			Invoice.find params[:id]
 		elsif parent.is_a? Plant
 			parent.invoices.new( params[:invoice] )
 		else
+
 			nil
 		end
 	end # invoice
@@ -81,6 +82,7 @@ class InvoicesController < ApplicationController
 		if invoice.update_attributes params[:invoice]
 			flash[:success] = t(:success, :scope => [:invoice, :controller, :update])
 		else
+			throw "update failed"
 			flash[:error] = t(:error, :scope => [:invoice, :controller, :update])
 		end # update
 		respond_with invoice
