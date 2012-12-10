@@ -20,4 +20,8 @@ class Material < ActiveRecord::Base
 	def cost
 		unit_price * quantity
 	end # cost
+
+	def mass
+		Mass.new quantity, units
+	end # mass
 end # Material

@@ -1,0 +1,10 @@
+.row-fluid.body-icon-scroll
+	- count = 0
+	- icons.each do |icon|
+		- count += 1
+		- if count <= size
+			%div{:class => "span#{13-size}"}
+				%img.body-icon-scroll.img-rounded{:src => icon}
+		- else
+			%div{:class => "span#{13-size} inactive"}
+				%img.body-icon-scroll.img-rounded{:src => icon}

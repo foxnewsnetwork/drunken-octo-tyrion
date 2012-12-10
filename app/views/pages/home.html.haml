@@ -1,3 +1,6 @@
+%section.hero-unit{:style => "background-image: url('#{background}');"}
+	=render "doodads/hero/text", :texts => texts
+	=render "doodads/hero/focus", :focus => focus
+%section.container-fluid.centered
+	=render "doodads/body/tabs", :tabs => tabs
 
-%h1
-	=link_to "Factories", plants_path

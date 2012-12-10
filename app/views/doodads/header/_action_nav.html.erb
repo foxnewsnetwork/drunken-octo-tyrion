@@ -1,0 +1,14 @@
+<ul class="action-nav">
+	<% actions.each do |action, path| %>
+		<li class="action-nav">
+			<% case action %>
+			<% when :signin %>
+				<%= render "doodads/header/signin", :signin_path => path %>			
+			<% when :signup %>
+				<%= render "doodads/header/signup", :signup_path => path %>
+			<% when :search %>
+				<%= render "doodads/header/search", :search_path => path %>
+			<% end %>
+		</li>
+	<% end %>
+</ul>

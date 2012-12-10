@@ -1,0 +1,10 @@
+.row-fluid
+	- tabs.each do |tab|
+		.span4.body-tab
+			=link_to tab[:href] do
+				%img.body-tab-icon{ :src => tab[:icon] }
+			=link_to tab[:href] do
+				%h5.body-tab-header= tab[:header]
+			%p.body-tab-content= tab[:content]
+			=link_to tab[:href], :class => "btn btn-info" do
+				%i.icon-info-sign

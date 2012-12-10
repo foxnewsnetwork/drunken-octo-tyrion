@@ -1,10 +1,20 @@
--if 3 < current_user.level
-	=link_to "New Sales Order", new_plant_sale_path(plant)
-%h2 Filter by companies:
-%ul
-	-orders.each do |order|
-		%li=link_to order.company.name, "?company_id=#{order.company_id}"
-%ul
-	-orders.each do |sale|
-		%li= link_to "#{sale.company.name} -- #{sale.created_at}", order_path(sale)
+%section.container-fluid
+	-if 3 < current_user.level
+		.row-fluid
+			.span12
+				%legend= t :filter, :scope => [:sale, :view, :index]
+				%ul
+					-orders.each do |order|
+						%li=link_to order.company.name, "?company_id=#{order.company_id}"
+		.row-fluid
+			.span12
+				=link_to new_plant_sale_path(plant), :class => "btn" do
+					=content_tag :i, "", :class => "icon-star"
+					=t :new, :scope => [:sale, :view, :index]
+		.row-fluid
+			.span12
+				%legend= t :orders, :scope => [:sale, :view, :index]
+				%ul
+					-orders.each do |sale|
+						%li= link_to "#{sale.company.name} -- #{sale.created_at}", order_path(sale)
 

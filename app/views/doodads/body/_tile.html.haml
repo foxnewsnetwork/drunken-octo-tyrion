@@ -1,0 +1,30 @@
+-if local_assigns.has_key? :invert
+	.body-tile
+		.span8.inverted
+			-if tile.has_key? :link
+				=link_to tile[:link] do
+					%h2= tile[:header]
+			-else
+				%h2= tile[:header]
+			%p= tile[:content]
+		.span4.inverted
+			-if tile.has_key? :link
+				=link_to tile[:link] do
+					%img.img-polaroid{ :src => tile[:image] }
+			-else
+				%img.img-polaroid{ :src => tile[:image] }
+-else
+	.body-tile
+		.span4.uninverted
+			-if tile.has_key? :link
+				=link_to tile[:link] do
+					%img.img-polaroid{ :src => tile[:image] }
+			-else
+				%img.img-polaroid{ :src => tile[:image] }
+		.span8.uninverted
+			-if tile.has_key? :link
+				=link_to tile[:link] do
+					%h2= tile[:header]
+			-else
+				%h2= tile[:header]
+			%p= tile[:content]

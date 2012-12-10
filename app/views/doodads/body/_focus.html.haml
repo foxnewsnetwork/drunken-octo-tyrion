@@ -1,0 +1,6 @@
+.row-fluid.body-focus
+	- if focus.has_key? :header
+		.span12
+			%h1= focus[:header] 
+	.span4.offset4
+		=link_to focus[:content], focus[:link], :class => "btn btn-large btn-block btn-primary"

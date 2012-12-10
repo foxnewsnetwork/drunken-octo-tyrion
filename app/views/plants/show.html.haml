@@ -1,18 +1,18 @@
--if user_signed_in?
-	-if current_user.level > 4
-		%ul
-			%li=link_to "edit plant", edit_plant_path( plant)
-			%li=link_to "Sales", plant_sales_path(plant)
-			%li=link_to "Purchases", plant_purchases_path(plant)
-			%li=link_to "Inventory", plant_materials_path(plant)
-			%li=link_to "Outgoing Invoices", plant_outgoing_invoices_path(plant)
-			%li=link_to "Incoming Invoices", plant_incoming_invoices_path(plant)
-	-if current_user.level > 5
-		%h1= "Expenses: #{plant.expenses}"
-		%h1= "Gross Income: #{plant.gross_income}"
-%dl
-	-plant.class.attr_accessible[:default].each do |attr|
-		-next if attr.blank?
-		%dt= attr
-		%dd= plant[attr.to_sym]
+%section.container-fluid
+	.row-fluid.centered
+		-if user_signed_in?
+			-if current_user.level > 4
+				=render "doodads/body/tabs", :tabs => tabify(plant, :sale, :outgoing, :inventory)
+	.row-fluid.centered
+		-if user_signed_in?
+			-if current_user.level > 4
+				=render "doodads/body/tabs", :tabs => tabify(plant, :purchase, :incoming, :edit)
+	.row-fluid
+		.span12
+			%legend= t(:legend, :scope => [:plant, :view, :show])
+			%dl
+				-plant.class.attr_accessible[:default].each do |attr|
+					-next if attr.blank?
+					%dt= t(attr, :scope => [:plant, :model, :attributes])
+					%dd= plant[attr.to_sym]
 

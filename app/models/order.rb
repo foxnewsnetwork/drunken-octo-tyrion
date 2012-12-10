@@ -52,6 +52,12 @@ class Order < ActiveRecord::Base
   ###
   # Methods
   ###
+  def total_weight
+    materials.inject(Mass.new 0,"pounds") do |mem, mat|
+      mem += Mass.new mat.quantity, mat.units
+    end # inject
+  end # total_weight
+
   def custom_create params
     quantities = params[:quantities].zip(params[:units]).map do |q|
       { :quantity => q.first, :units => q.last }

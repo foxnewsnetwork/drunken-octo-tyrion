@@ -1,0 +1,240 @@
+// Place all the styles related to the websites controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+// Place all the styles related to the pages controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+@import "bootstrap";
+@import "font-awesome";
+@mixin debug {
+	border: 1px solid red;
+}
+$background_color: #ddd;
+$hero_bg_height: 400px;
+$header_height: 100px;
+$hero_radius: 5px;
+$hero_text_color: #fff;
+$hero_text_weight: bold;
+$hero_text_top: 10px;
+$hero_left: 5px;
+$hero_text_height: 1.1; 
+$hero_card_float: none;
+$hero_card_height: 225px;
+$hero_card_width: 18%;
+$tab_height: 300px;
+$tile_height: 200px;
+
+$border_color: darken($background_color, 15);
+$header_logo_color: lighten($background_color, 45);
+$header_link_color: darken($background_color, 20);
+$hero_card_color: lighten(desaturate($background_color, 55), 55);
+$hero_focus_color: fade-out($hero_card_color, 0.65);
+$odd_row_color: lighten($background_color, 45);
+$even_row_color: darken($odd_row_color, 15);
+$tab_color: $hero_card_color;
+$footer_bg_color: darken($background_color, 25);
+.hero-unit {
+	height: $hero_bg_height;
+}
+
+header {
+	padding-bottom: $header_height / 5;	
+	background: $header_logo_color;
+}
+.header-logo {
+	img {
+		margin-left: 15px;
+		margin-top: 15px;
+	}
+}
+.header-navigation {
+	background-color: $header_logo_color;
+	float: right;
+	ul {
+		list-style: none;
+		padding-left: 0;
+		margin-left: 0;
+		display: inline;
+		border-right: 1px solid $border_color;
+		li {
+			display: inline-block;
+			padding-left: 15px;
+			padding-right: 15px;
+			margin-top: $header_height / 2.5;
+			text-align: center;
+			a {
+				text-shadow: 0.07em 0.06em invert($header_link_color);
+				color: $header_link_color;
+				font-size: 16px;
+				font-weight: bold;
+			} 
+		}
+	}
+	ul.action-nav {
+		padding-right: 25px;
+		padding-left: 25px;
+		li.action-nav {
+			input {
+				margin-top: -10px;
+			}
+			button {
+				margin-top: -10px
+			}
+		}
+	}
+}
+
+
+@mixin hero-align($dist) {
+	margin-left: $dist;
+}
+.hero-unit {
+	.hero-text {
+		@include hero-align($hero_left);
+		color: $hero_text_color;
+		line-height: $hero_text_height;
+		margin-top: $hero_text_top;
+		font-weight: $hero_text_weight;
+		
+	}
+	ul.hero-cards {
+		list-style: none;
+		float: $hero_card_float;
+		@include hero-align($hero_left);
+		li {
+			display: inline-block;
+			border-radius: $hero_radius;
+			height: $hero_card_height;
+			width: $hero_card_width;	
+			background: $hero_card_color;
+			color: invert($hero_card_color);
+			padding-left: 1em;
+			padding-right: 1em;
+			padding-top: 1.5em;
+			background-repeat: no-repeat;
+			background-origin: border-box;
+			background-position: left bottom;
+			background-size: contain;
+		}
+	}
+	.hero-focus {
+		@include hero-align($hero_left);
+		border-radius: $hero_radius;
+		background-color: $hero_focus_color;
+		text-align: center;
+	}
+}
+
+.inactive {
+	display: none;
+}
+
+
+.centered {
+	text-align: center;
+}
+
+.rightify {
+	text-align: right;
+}
+
+.leftify {
+	text-align: left;
+}
+
+body {
+	background-color: $odd_row_color;
+}
+@mixin inversion ($alignment) {
+	text-align: $alignment;
+	.invert {
+		text-align: if($alignment == left, right, left);
+	}
+}
+section.container {
+	.row {
+		margin-top: 25px;
+		margin-bottom: 25px;
+	}
+}
+section.container-fluid {
+	padding-left: 0;
+	padding-right: 0;
+	
+	.row-fluid {
+		margin-top: 20px;
+		margin-bottom: 20px;
+		padding: 2%;
+		width: auto;
+	}
+	.row-fluid:nth-child(odd) { 
+		background-color: $odd_row_color;
+	}
+	.row-fluid:nth-child(even) { 
+		background-color: $even_row_color;
+	}
+	.body-tab {
+		height: $tab_height;
+		background-color: $tab_color;
+		overflow: hidden;
+		padding: 1em;
+		color: invert($tab_color);
+		img {
+			height: $tab_height / 3;
+		}
+		h2 {
+			height: $tab_height / 6;
+			overflow: hidden;
+		}
+		p {
+			height: $tab_height / 5;
+			overflow: hidden;
+		}
+		.btn-info {
+			position: relative;
+			bottom: 0;
+		}
+	}
+	.body-tile {
+		padding: 5px;
+		height: $tile_height;
+		
+		img {
+			height: $tile_height - 10;
+		}
+		.span4.uninverted {
+			
+			text-align: right;
+		}
+		.span8.uninverted {
+			
+			text-align: left;
+		}
+		.span4.inverted {
+			
+			text-align: left;
+		}
+		.span8.inverted {
+			
+			text-align: right;
+		}
+	}
+}
+
+.leftify {
+	text-align: left;
+}
+footer {
+	padding-top: 2em;
+	background-color: $footer_bg_color;
+	ul {
+		list-style: none;
+		li {
+			display: inline-block;
+		}
+	}
+	a {
+		color: invert($footer_bg_color);
+	}
+}

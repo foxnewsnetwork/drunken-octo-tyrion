@@ -1,0 +1,7 @@
+<% if respond_to? :user_signed_in? %>
+	<% unless user_signed_in? %>
+		<%= link_to t(:signup, :scope => "navigation"), user_signup_path, :class => "action-nav" %>
+	<% end %>
+<% else %>
+	<%= link_to "Users not implemented", "#", :class => "action-nav error" %>
+<% end %>

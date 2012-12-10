@@ -1,4 +1,9 @@
-=form_for user, :method => :put do |f|
-	=f.label :name
-	=f.text_field :name
-	=f.submit
+%section.container
+	.row
+		=form_for user, :method => :put do |f|
+			%legend= "Edit #{user.name}"
+			%fieldset
+				=f.label :name
+				=f.text_field :name
+			.form-actions
+				=f.submit

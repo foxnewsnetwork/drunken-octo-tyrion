@@ -1,0 +1,12 @@
+<ul class="row hero-cards">
+	<% cards.each do |card| %>
+		<% style = card[:image] || "" %>
+		<% style = "background-image: url('#{style}');" unless style.blank? %> 
+		<%= content_tag :li, :style => style do %>
+			<h3><%= card[:header] %></h3>
+			<%= content_tag :div, :class => "card-body" do %>
+				<%= card[:body] %>
+			<% end %>
+		<% end %>
+	<% end %>
+</ul>

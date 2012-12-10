@@ -1,0 +1,5 @@
+-if local_assigns.has_key? :externals
+	.span2
+		%ul.external-links
+			-externals.each do |name, target|
+				%li.external-link= link_to name, target

@@ -1,36 +1,41 @@
-=form_tag start_plant_sale_path(plant, sale.key) do
-	%legend Sales order header
-	%fieldset
-		%h2 content coming soon!
-	%fieldset.form-actions
-		=submit_tag "New Sales Order"
+%section.container-fluid
+	.row-fluid
+		=form_tag start_plant_sale_path(plant, sale.key) do
+			%legend Sales order header
+			%fieldset
+				%h2 content coming soon!
+			%fieldset.form-actions
+				=submit_tag "New Sales Order"
 
--unless params[:id].nil?
-	%h5= "id: " + params[:id] 
-	%dl
-	-sale.serialize.each do |key, val|
-		%dt= key
-		%dd= val
+		-unless params[:id].nil?
+			%legend= "id: " + params[:id] 
+			%dl
+			-sale.serialize.each do |key, val|
+				%dt= key
+				%dd= val
 
 
-	=form_tag material_plant_sale_path(plant, sale.key) do
-		%legend Sales order materials
-		%fieldset
-			=label_tag "material_name", "Material Name"
-			=text_field_tag "material[name]"
-			=label_tag "material_quantity", "Amount"
-			=number_field_tag "material[quantity]"
-			=label_tag "material_units", 'Units'
-			=select_tag "material[units]", options_for_select(['pounds','tons','metric tons'])
-			=label_tag "material_price", "Price"
-			=number_field_tag "material[price]"
-		%fieldset.form-actions
-			=submit_tag "add material"
+			=form_tag material_plant_sale_path(plant, sale.key) do
+				%legend Sales order materials
+				%fieldset
+					=label_tag "material_name", "Material Name"
+					=text_field_tag "material[name]"
+					=label_tag "material_quantity", "Amount"
+					=number_field_tag "material[quantity]", "", :step => 0.001
+					=label_tag "material_units", 'Units'
+					=select_tag "material[units]", options_for_select(['pounds','tons','metric tons'])
+					=label_tag "material_price", "Price"
+					.input-prepend.input-append
+						%span.add-on $
+						=number_field_tag "material[price]", "", :step => 0.001, :class => "input-small"
+						%span.add-on per unit
+				%fieldset.form-actions
+					=submit_tag "add material"
 
-	=form_tag finish_plant_sale_path(plant, sale.key) do
-		%legend Sale order finish
-		%fieldset
-			=label_tag "company", "Company"
-			=text_field_tag "company"
-		%fieldset.form-actions
-			=submit_tag "finalize form"
+			=form_tag finish_plant_sale_path(plant, sale.key) do
+				%legend Sale order finish
+				%fieldset
+					=label_tag "company", "Company"
+					=text_field_tag "company"
+				%fieldset.form-actions
+					=submit_tag "finalize form"

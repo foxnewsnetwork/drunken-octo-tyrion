@@ -1,0 +1,5 @@
+-if local_assigns.has_key? :navigation
+	.span5
+		%ul.footer_nav
+			-navigation.each do |name, target|
+				%li.footer_nav= link_to name, target

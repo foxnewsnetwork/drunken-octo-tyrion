@@ -1,0 +1,8 @@
+<%= form_tag search_path, :method => :get do %>
+	<%= content_tag :div, :class => "input-append" do %>
+		<%= text_field_tag 'search', nil, :placeholder => '...', :class => "input-small" %>
+		<%= content_tag :button, :type => "submit", :class => "btn" do %>
+			<%= content_tag :i, "", :class => "icon-search" %>
+		<% end %>
+	<% end %>
+<% end %>

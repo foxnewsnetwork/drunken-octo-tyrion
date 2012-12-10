@@ -1,12 +1,14 @@
-=link_to plant_path order.plant do
-	%h1= order.plant.name
-%h3=order.net_income
-%ul
+%section.container-fluid
+	.row-fluid
+		=link_to plant_path order.plant do
+			%h1= order.plant.name
+		%dl
+			%dt= t(:income, :scope => [:order, :view, :show])
+			%dd= "$#{order.net_income}" 
+			%dt= t :weight, :scope => [:order, :view, :show]
+			%dd= order.total_weight
+		
 	-order.materials.each do |material|
-		%li
-			%dl
-				-material.class.attr_accessible[:default].map(&:to_sym).each do |attr|
-					-next if attr == :""
-					%dt= attr
-					%dd= material[attr]
-
+		.row-fluid
+			=render 'doodads/body/tile', :tile => mtilify(material)
+		

@@ -1,0 +1,9 @@
+<% if respond_to? :user_signed_in? %>
+	<% if user_signed_in? %>
+		<%= link_to t(:welcome, :scope => "navigation", :name => current_user.name ), user_path(current_user), :class => "action-nav" %>
+	<% else %>
+		<%= link_to t(:signin, :scope => "navigation"), user_signin_path, :class => "action-nav" %>
+	<% end %>
+<% else %>
+	<%= link_to "Sessions not implemented", "#", :class => "action-nav error" %>
+<% end %>

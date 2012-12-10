@@ -1,7 +1,8 @@
 -content_for :header do
-	=link_to "Home", root_path
-	-if user_signed_in?
-		=link_to current_user.name || current_user.email, current_user
-		=link_to "Sign out", destroy_user_session_path, :method => :delete
-	-else
-		=link_to "Sign in", new_user_session_path
+	.row-fluid
+		.span4.header-logo
+			=link_to image_tag(logo), root_path
+		.span8
+			.header-navigation
+				=render "doodads/header/nav", :navigation => navigation
+				=render "doodads/header/action_nav", :actions => actions
