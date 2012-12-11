@@ -23,5 +23,17 @@ class MaterialsController < ApplicationController
 			mem
 		end # reduce
 	end # ecpose
-
+	expose(:purchases) do
+		plant.orders.purchases.from(starting).to(ending).inject({}) do |mem, purchase|
+			purchase.materials.inject(mem) do |mem, material|
+				if mem.has_key? material.name
+					mem[material.name] += Mass.new material.quantity, material.units
+				else
+					mem[material.name] = Mass.new material.quantity, material.units
+				end # if
+				mem
+			end # reduce
+			mem
+		end # reduce
+	end # ecpose
 end # Materials
