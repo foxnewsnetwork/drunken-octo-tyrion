@@ -45,5 +45,13 @@ class InvoicesController < ApplicationController
 		respond_with invoice
 	end # update
 
-	
+	def destroy
+		if invoice.destroy
+			flash[:success] = t(:success, :scope => [:invoice, :controller, :update])
+		else
+			throw "update failed"
+			flash[:error] = t(:error, :scope => [:invoice, :controller, :update])
+		end # update
+		redirect_to :back
+	end # destroy	
 end # Invoicescontroller

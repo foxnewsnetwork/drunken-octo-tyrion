@@ -73,4 +73,21 @@ describe InvoicesController do
 			end # it
 		end # connect
 	end # post
+
+	describe "delete" do 
+		describe "destroy" do 
+			before :each do
+				@invoice = Invoice.create(FactoryGirl.attributes_for :invoice).from(@plant).to(@company)
+				@invoice.save
+				@destroy = lambda do
+					delete :destroy, :id => @invoice.id
+				end # connect
+				request.env["HTTP_REFERER"] = root_path
+			end # each
+			it "should destroy the record" do 
+
+				@destroy.should change(Invoice, :count).by -1
+			end # it
+		end # destroy
+	end # delete
 end # Invoices

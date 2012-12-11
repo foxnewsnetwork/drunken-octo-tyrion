@@ -1,8 +1,10 @@
 =label_tag :pay_method, "pay method"
-=select_tag "invoice[pay_method]", options_for_select(['cash','check','money-order','credit','debit','other'])
+=select_tag "invoice[pay_method]", options_for_select(pay_method_options)
 =label_tag :amount, "amount"
-=number_field_tag :amount
+.input-prepend
+	%span.add-on $
+	=number_field_tag "invoice[amount]", 0, :step => 0.01
 =label_tag :status, "status"
-=select_tag "invoice[status]", options_for_select(['incomplete','unpaid','paid','redacted'])
+=select_tag "invoice[status]", options_for_select(status_options)
 =label_tag :notes, "notes"
 =text_area_tag "invoice[notes]", "", :size => "40x5"

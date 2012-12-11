@@ -22,11 +22,11 @@ module PlantsHelper
 			when :outgoing
 				thing[:icon] = "http://placehold.it/270x333"
 				thing[:href] = plant_outgoing_invoices_path plant
-				thing[:content] = t(:outgoing_content, :scope => [:plant, :view, :show]) + " ~ $#{plant.actual_income}"
+				thing[:content] = t(:outgoing_content, :scope => [:plant, :view, :show]) + " ~ $#{plant.expected_income}"
 			when :incoming
 				thing[:icon] = "http://placehold.it/270x333"
 				thing[:href] = plant_incoming_invoices_path plant
-				thing[:content] = t(:incoming_content, :scope => [:plant, :view, :show]) + " ~ $#{plant.actual_expenses}"
+				thing[:content] = t(:incoming_content, :scope => [:plant, :view, :show]) + " ~ $#{plant.expected_expenses}"
 			else
 				throw "#{s} cannot be tabified"
 			end # case

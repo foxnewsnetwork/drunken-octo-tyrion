@@ -1,0 +1,16 @@
+%section.container-fluid
+	.row-fluid
+		=form_for invoice, :method => :put do |f|
+			%legend Edit Invoice Form
+			%fieldset
+				=f.label :pay_method
+				=f.select :pay_method, options_for_select(pay_method_options)
+				.input-prepend
+					%span.add-on $
+					=f.number_field :amount, :step => 0.01
+				=f.label :status
+				=f.select :status, options_for_select(status_options)
+				=f.label :notes
+				=f.text_area :notes, :size => "40x5"
+			%fieldset.form-action
+				=f.submit

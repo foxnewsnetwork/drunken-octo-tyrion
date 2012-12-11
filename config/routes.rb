@@ -1,6 +1,6 @@
 Unfactory::Application.routes.draw do
 
-  resources :invoices, :only => [:show, :edit, :update] do
+  resources :invoices, :only => [:show, :edit, :update, :destroy] do
     member do
       post :connect
       # post :from

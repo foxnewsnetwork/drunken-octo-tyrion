@@ -238,3 +238,19 @@ footer {
 		color: invert($footer_bg_color);
 	}
 }
+
+@mixin attention($color) {
+	font-size: 1.5em;
+	background-color: $color;
+	padding: 10px;
+	box-shadow: 7px 7px 2px #888888;
+}
+.notice-message {
+	@include attention(yellow);
+}
+.warning-message {
+	@include attention(red);
+}
+.success-message {
+	@include attention(green);
+}

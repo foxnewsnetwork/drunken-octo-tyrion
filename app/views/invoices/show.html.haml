@@ -1,29 +1,48 @@
--if invoice.receivable.nil?
-	=form_tag from_plant_incoming_invoice_path(invoice.payable, invoice) do
-		%legend Incoming Invoice
-		=label_tag :company_id, "To company name"
-		=text_field_tag "company_name"
-		=label_tag :plant_id, "from plant name"
-		=text_field_tag "plant_name", invoice.payable.name, :disabled => "disabled"
-		=submit_tag
--if invoice.payable.nil?
-	=form_tag to_plant_outgoing_invoice_path(invoice.receivable, invoice) do
-		%legend Outgoing Invoice
-		=label_tag :plant_id, "From plant name"
-		=text_field_tag "plant_id", invoice.receivable.name, :disabled => "disabled"
-		=label_tag :company_id, "to company name"
-		=text_field_tag "company_name"
-		=submit_tag
-%h3 Assocated orders
-=form_tag connect_invoice_path(invoice) do 
-	=label_tag :order_id, "Order id"
-	=text_field_tag :order_id
-	=submit_tag
-%ul
-	-invoice.orders.each do |order|
-		%li= link_to "#{order.created_at} -- #{order.id}", order_path(order)
-
-%dl
-	-invoice.attributes.each do |key, val|
-		%dt= key
-		%dd= val
+%section.container-fluid
+	.row-fluid
+		-if invoice.receivable.nil?
+			.notice-message= t :need_company, :scope => [:invoice, :view, :show]
+			=form_tag from_plant_incoming_invoice_path(invoice.payable, invoice) do
+				%legend Incoming Invoice
+				%fieldset
+					=label_tag :company_id, "To company name"
+					=text_field_tag "company_name"
+					=label_tag :plant_id, "from plant name"
+					=text_field_tag "plant_name", invoice.payable.name, :disabled => "disabled"
+				.form-actions
+					=submit_tag
+		-if invoice.payable.nil?
+			.notice-message= t :need_company, :scope => [:invoice, :view, :show]
+			=form_tag to_plant_outgoing_invoice_path(invoice.receivable, invoice) do
+				%legend Outgoing Invoice
+				%fieldset
+					=label_tag :plant_id, "From plant name"
+					=text_field_tag "plant_id", invoice.receivable.name, :disabled => "disabled"
+					=label_tag :company_id, "to company name"
+					=text_field_tag "company_name"
+				.form-actions
+					=submit_tag
+		=form_tag connect_invoice_path(invoice) do
+			%legend Associated orders
+			-if invoice.orders.empty?				
+				.notice-message= t :need_order, :scope => [:invoice, :view, :show] 
+			%fieldset
+				=label_tag :order_id, "Order id"
+				=text_field_tag :order_id
+			.form-actions
+				=submit_tag
+		%ul
+			-invoice.orders.each do |order|
+				%li= link_to "#{order.company.name} -- #{order.created_at} -- #{order.id}", order_path(order)
+		%legend Order Details
+		=link_to edit_invoice_path( invoice ), :class => "btn" do
+			=content_tag :i, "", :class => "icon-edit"
+			=t :edit, :scope => [:invoice, :view, :show]
+		%dl
+			-[:id, :status, :created_at, :updated_at, :amount].each do |key|
+				%dt= t key, :scope => [:invoice, :view, :show]
+				%dd= invoice[key]
+			%dt= t :payable, :scope => [:invoice, :view, :show]
+			%dd= link_to invoice.payable.name, invoice.payable unless invoice.payable.nil?
+			%dt= t :receivable, :scope => [:invoice, :view, :show]
+			%dd= link_to invoice.receivable.name, invoice.receivable unless invoice.receivable.nil?

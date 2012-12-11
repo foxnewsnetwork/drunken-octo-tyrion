@@ -1,5 +1,24 @@
-=link_to "New Incoming Invoice", new_plant_incoming_invoice_path(plant)
-%h3 Incoming Invoices
-%ul
-	-incomings.each do |invoice|
-		%li= link_to "#{invoice.created_at} -- #{invoice.amount}", invoice_path( invoice)
+%section.container-fluid
+	-if 3 < current_user.level
+		.row-fluid
+			.span12
+				%legend= t :filter, :scope => [:outgoing, :view, :index]
+				%ul
+					-incomings.each do |invoice|
+						%li=link_to (invoice.receivable.nil? ? "unknown company" : invoice.receivable.name), "?receivable_id=#{invoice.receivable_id}"
+		.row-fluid	
+			.span12
+				=link_to new_plant_incoming_invoice_path(plant), :class => "btn" do
+					=content_tag :i, "", :class => "icon-star"
+					=t :new, :scope => [:outgoing, :view, :index]
+		.row-fluid	
+			.span12
+				%legend= t :invoices, :scope => [:outgoing, :view, :index]
+				%ul
+					-incomings.each do |invoice|
+						%li
+							=link_to invoice_path( invoice) do
+								="#{invoice.receivable.nil? ? "unknown company" : invoice.receivable.name} -- #{invoice.created_at} -- #{invoice.amount}"
+							%span
+								=link_to invoice_path(invoice), :method => :delete do
+									=content_tag :i, "", :class => "icon-remove"

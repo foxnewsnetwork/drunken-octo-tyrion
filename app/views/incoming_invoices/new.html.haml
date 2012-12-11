@@ -1,6 +1,8 @@
-=form_tag plant_incoming_invoices_path(plant, incoming) do
-	%legend Incoming Invoice Form
-	%fieldset
-		=render "invoices/form_fields"
-	%fieldset.form-action
-		=submit_tag
+%section.container-fluid
+	.row-fluid
+		=form_tag plant_incoming_invoices_path(plant, incoming) do
+			%legend Incoming Invoice Form
+			%fieldset
+				=render "invoices/form_fields"
+			%fieldset.form-action
+				=submit_tag
