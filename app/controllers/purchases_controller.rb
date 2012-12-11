@@ -7,13 +7,13 @@ class PurchasesController < ApplicationController
 		purchases = plant.orders.where(search)
 	end # orders
 	expose( :purchase ) do
-		if Sale.exist? params[:id]
+		if Purchase.exist? params[:id]
 			Purchase.find params[:id]
 		else  
 			raise "User Not Signed In Error" unless user_signed_in?
-			plant.buys.signed_by(current_user)
+			plant.buys.signed_by(current_user).persist!
 		end
-	end # sale
+	end # purchase
 	before_filter :allow_sales
 
 	def start

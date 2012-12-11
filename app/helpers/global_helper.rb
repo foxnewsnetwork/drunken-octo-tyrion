@@ -35,4 +35,8 @@ module GlobalHelper
 	def sentencify string
 		string.gsub(/\n\r/, "<p />").gsub(/\n/, "<br />")
 	end # sentencify
+
+	def weight_units
+		['pounds','tons','metric tons']
+	end # weight_units
 end # GlobalHelper

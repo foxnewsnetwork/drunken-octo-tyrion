@@ -10,7 +10,7 @@ module PlantsHelper
 			when :sale
 				thing[:icon] = "http://placehold.it/270x333"
 				thing[:href] = plant_sales_path plant
-				thing[:content] = t(:sale_content, :scope => [:plant, :view, :show]) + " ~ $#{plant.net_income}"
+				thing[:content] = t(:sale_content, :scope => [:plant, :view, :show]) + " ~ $#{plant.gross_income}"
 			when :purchase
 				thing[:icon] = "http://placehold.it/270x333"
 				thing[:href] = plant_purchases_path plant

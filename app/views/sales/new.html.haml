@@ -23,7 +23,7 @@
 					=label_tag "material_quantity", "Amount"
 					=number_field_tag "material[quantity]", "", :step => 0.001
 					=label_tag "material_units", 'Units'
-					=select_tag "material[units]", options_for_select(['pounds','tons','metric tons'])
+					=select_tag "material[units]", options_for_select(weight_units)
 					=label_tag "material_price", "Price"
 					.input-prepend.input-append
 						%span.add-on $

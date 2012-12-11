@@ -77,7 +77,13 @@ class Plant < ActiveRecord::Base
 
   alias_method :predicted_income, :net_income
   alias_method :predicted_expenses, :expenses
-  
+
+  # def sales_income
+  #   orders.where(:genre => 'sale').inject(0) do |mem, sale|
+      
+  #   end # each sale
+  # end # sales_income  
+
   def actual_income
     outgoing_invoices.where(:status => "deposited").inject(0) do |mem, invoice|
       mem += invoice.amount
