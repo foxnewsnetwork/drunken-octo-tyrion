@@ -18,7 +18,11 @@ class Material < ActiveRecord::Base
 	attr_accessible :name, :quantity, :units, :unit_price
 	
 	def cost
-		unit_price * quantity
+		if unit_price.nil? or quantity.nil?
+			0
+		else
+			unit_price * quantity
+		end
 	end # cost
 
 	def mass

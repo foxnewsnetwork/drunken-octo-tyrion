@@ -1,5 +1,6 @@
 Unfactory::Application.routes.draw do
 
+  resources :materials, :only => [:destroy]
   resources :invoices, :only => [:show, :edit, :update, :destroy] do
     member do
       post :connect
@@ -15,6 +16,9 @@ Unfactory::Application.routes.draw do
   end # companies
 
   resources :orders, :except => [:create, :new] do 
+    member do
+      post :update_material
+    end # member
     resources :materials
     resources :invoices, :only => [:index]
   end # orders

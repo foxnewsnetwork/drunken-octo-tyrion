@@ -2,6 +2,9 @@
 	.row-fluid
 		=link_to plant_path order.plant do
 			%h1= order.plant.name
+		=link_to edit_order_path(order), :class => "btn" do
+			=content_tag :i, "", :class => "icon-edit"
+			=t :edit, :scope => [:order, :view, :show]
 		%dl
 			%dt= t(:income, :scope => [:order, :view, :show])
 			%dd= "$#{order.net_income}" 

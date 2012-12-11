@@ -36,4 +36,19 @@ class MaterialsController < ApplicationController
 			mem
 		end # reduce
 	end # ecpose
+	expose(:material) do 
+		Material.find_by_id params[:id]
+	end # material
+
+	before_filter :allow_sales
+	def destroy
+		if material.destroy
+			flash[:success] = t :success, :scope => [:material, :controller, :destroy]
+		else
+			throw "delete failed #{material}"
+			flash[:error] = t :error, :scope => [:material, :controller, :destroy]
+		end
+		redirect_to :back
+	end # destroy
+
 end # Materials

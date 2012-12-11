@@ -47,4 +47,17 @@ describe MaterialsController do
 			response.should be_success
 		end # it
 	end # timed
+	describe "delete" do 
+		login_user :sales
+		before :each do 
+			@material = Material.create FactoryGirl.attributes_for(:material)
+			@destroy = lambda do
+				delete :destroy, :id => @material
+			end # destroy
+			request.env["HTTP_REFERER"] = root_path
+		end # each
+		it "should rapekill the material" do 
+			@destroy.should change(Material,:count).by -1
+		end # it
+	end # delete
 end # Materials controller
