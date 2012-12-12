@@ -1,0 +1,10 @@
+en: {
+	page: {
+		controller: {
+			home: {
+				po_header_1: "Orders" ,
+				po_content_1: "Purchase and Sales management"
+			}
+		}
+	}
+}

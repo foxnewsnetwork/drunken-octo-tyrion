@@ -16,7 +16,7 @@ class PagesController < ApplicationController
 		}
 	end # focus
 	expose(:tabs) do
-		["http://placehold.it/270x333" ,"http://placehold.it/270x333" ,"http://placehold.it/270x333"].map do |n, icon|
+		{1=>"http://placehold.it/270x333" ,2=>"http://placehold.it/270x333" ,3=>"http://placehold.it/270x333"}.map do |n,icon|
 			{
 				:icon => icon ,
 				:header => t("po_header_#{n}", :scope => [:page, :controller, :home]) ,

@@ -4,8 +4,11 @@
 			.span12
 				%legend= t :filter, :scope => [:sale, :view, :index]
 				%ul
-					-orders.each do |order|
-						%li=link_to order.company.name, "?company_id=#{order.company_id}"
+					-orders.inject({}) do |mem, order|
+						- unless mem.has_key? order.company.name
+							%li=link_to order.company.name, "?company_id=#{order.company_id}"
+						- mem[order.company.name] = order.company_id
+						- mem
 		.row-fluid
 			.span12
 				=link_to new_plant_sale_path(plant), :class => "btn" do

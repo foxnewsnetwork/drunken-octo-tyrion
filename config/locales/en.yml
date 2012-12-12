@@ -1,5 +1,31 @@
 # Sample localization file for English. Add more files in this directory for other locales.
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
-en:
-  hello: "Hello world"
+en: {
+	navigation: {
+		welcome: "Welcome, master" ,
+	} ,
+	page: {
+		controller: {
+			home: {
+				po_header_1: "Orders" ,
+				po_content_1: "Purchase and Sales management" ,
+				po_header_2: "Invoices" ,
+				po_content_2: "Outgoing and incoming invoices management" ,
+				po_header_3: "Factory Details" ,
+				po_content_3: "Manage factory inventory and details" ,
+			}
+		}
+	} ,
+	plant: {
+		view: {
+			index: {
+				legend: "Your Factories"
+			} ,
+			show: {
+				legend: "Factory Attributes" ,
+				
+			}
+		}
+	}
+}

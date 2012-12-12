@@ -4,8 +4,11 @@
 			.span12
 				%legend= t :filter, :scope => [:outgoing, :view, :index]
 				%ul
-					-incomings.each do |invoice|
-						%li=link_to (invoice.receivable.nil? ? "unknown company" : invoice.receivable.name), "?receivable_id=#{invoice.receivable_id}"
+					-incomings.inject({}) do |mem, invoice|
+						- unless mem.has_key? (invoice.receivable.nil? ? "unknown company" : invoice.receivable.name)
+							%li=link_to (invoice.receivable.nil? ? "unknown company" : invoice.receivable.name), "?receivable_id=#{invoice.receivable_id}"
+						- mem[(invoice.receivable.nil? ? "unknown company" : invoice.receivable.name)] ||= invoice.receivable_id
+						- mem
 		.row-fluid	
 			.span12
 				=link_to new_plant_incoming_invoice_path(plant), :class => "btn" do
