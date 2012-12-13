@@ -1,4 +1,5 @@
 module UsersHelper
+
 	@@user_filters = [
 		lambda do |user|
 			!user.nil?

@@ -14,6 +14,13 @@
 #
 
 class Material < ActiveRecord::Base
+	###
+	# Tsundere
+	###
+	include Tsundere
+	attr_tsundere :id, :mass, :name, :quantity, :units, :buyable, :created_at, :updated_at, :as => { :logistics => 2 }
+	attr_tsundere :cost, :unit_price, :as => { :accounting => 4 }
+
 	belongs_to :buyable, :polymorphic => true
 	attr_accessible :name, :quantity, :units, :unit_price
 	

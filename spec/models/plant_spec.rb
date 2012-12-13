@@ -62,4 +62,29 @@ describe Plant do
 	  		@plant.gross_income.to_s.should eq @expected.to_s
 	  	end # it
 	end # it accountability
+	describe "tsundere" do 
+		before :each do 
+			@plant = FactoryGirl.create :plant
+		end # each
+		it "should actually work" do 
+			@plant.tsundere_for(:accounting).should_not be_nil
+		end # it
+		[:sales, :accounting, :management, :chief, :admin].each do |person|
+			[:sells, :buys].each do |sale|
+				it "should provide correct access for #{person} #{sale}" do
+					@plant.tsundere_for(person).should respond_to sale
+				end # it
+			end # each sale
+			unless :sales == person
+				[:actual_income, :actual_expenses, :expected_expenses, :expected_income, :predicted_income, :predicted_expenses].each do |acct|
+					it "should not respond to stuff it can't access #{acct}" do 
+						@plant.tsundere_for(:sales).should_not respond_to acct
+					end # it
+					it "should allow the #{person} do #{acct}" do 
+						@plant.tsundere_for(person).should respond_to acct
+					end # it
+				end # each acct
+			end # unless
+		end # each person
+	end # tsundere
 end # Plant

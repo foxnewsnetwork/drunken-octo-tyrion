@@ -15,6 +15,11 @@
 
 class Order < ActiveRecord::Base
   ###
+  # Tsundere
+  ###
+  include Tsundere
+  attr_tsundere :net_income, :expenses, :as => { :accounting => 4 }
+  ###
   # Scopes
   ###
   scope :sold, where(:genre => "sale")

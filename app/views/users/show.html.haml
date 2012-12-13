@@ -1,8 +1,9 @@
 %section.container
 	.row
-		-if user == current_user
-			=link_to edit_user_path(current_user), :class => "btn btn-info" do
-				=content_tag :i, "", :class => "icon-pencil"
+		-if user_signed_in?
+			-if user == current_user or 5 < (current_user.level.nil? ? 0 : current_user.level)
+				=link_to edit_user_path(user), :class => "btn btn-info" do
+					=content_tag :i, "", :class => "icon-pencil"
 		%dl
 			-[:email, :name, :created_at, :updated_at, :level].each do |attr|
 				%dt= attr

@@ -1,5 +1,5 @@
 module PagesHelper
-
+	
 	def tilify duck
 		case duck.class.to_s
 		when Plant.to_s

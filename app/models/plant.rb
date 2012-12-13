@@ -17,6 +17,15 @@
 
 class Plant < ActiveRecord::Base
   ###
+  # Tsundere
+  ###
+  attr_tsundere :sells, :buys, :id, :as => { :sales => 3 }
+  attr_tsundere :actual_income, :actual_expenses, :expected_expenses, :expected_income, :gross_income, :expenses, :predicted_income, :predicted_expenses, :as => { :accounting => 4 }
+  attr_tsundere :as => { :management => 5 }
+  attr_tsundere :as => { :chief => 6 }
+  attr_tsundere :as => { :admin => 7 }
+
+  ###
   # Attributes
   ###
   attr_accessible :name, :country, :state, :city, :address, :sqft, :founding_date, :closing_date

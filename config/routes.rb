@@ -9,7 +9,11 @@ Unfactory::Application.routes.draw do
     end # member
   end # resources
   devise_for :users
-  resources :users, :only => [:show, :edit, :update]
+  resources :users, :only => [:show, :edit, :update, :index] do
+    member do 
+      put :level
+    end # member
+  end # user
   
   resources :companies do 
     resources :orders, :except => [:create, :destroy, :new]

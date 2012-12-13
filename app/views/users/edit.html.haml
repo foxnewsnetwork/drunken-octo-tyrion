@@ -7,3 +7,13 @@
 				=f.text_field :name
 			.form-actions
 				=f.submit
+	-if user_signed_in? and !current_user.level.nil? and current_user.level > 5
+		.row
+			=form_tag level_user_path(user), :method => :put do
+				%legend= "Change user level"
+				%fieldset
+					=label_tag :level, t(:level, :scope => [:user, :view, :edit])
+					=number_field_tag "level", user.level, :step => 1
+				.form-actions
+					=submit_tag "Change level"
+

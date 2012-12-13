@@ -1,5 +1,5 @@
 %section.container-fluid
-	-if 3 < current_user.level
+	-if 2 < current_user.level
 		.row-fluid
 			.span12
 				%legend= t :filter, :scope => [:purchase, :view, :index]
@@ -19,5 +19,5 @@
 				%legend= t :orders, :scope => [:purchase, :view, :index]
 				%ul
 					-orders.each do |purchase|
-						%li= link_to "#{purchase.company.name} -- #{purchase.created_at} -- $#{purchase.net_income}", order_path(purchase)
+						%li= link_to "#{purchase.company.name} -- #{purchase.created_at} -- $#{purchase.tsundere_for(current_user.level).net_income}", order_path(purchase)
 

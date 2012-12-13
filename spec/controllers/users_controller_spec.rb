@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe UsersController do
   before :each do 
-    @user = FactoryGirl.create :user
+    @user = FactoryGirl.create :user, :email => "assfag@ass.fag"
   end # each
 
   describe "GET 'show'" do
@@ -18,5 +18,18 @@ describe UsersController do
       response.should be_success
     end
   end
+
+  describe "PUT 'level'" do 
+    login_user :management
+    before :each do 
+      @level = lambda do 
+        put :level, :id => @user.id, :level => 7
+      end # level
+    end # each
+    it "should change level" do 
+      @level.call
+      User.find(@user.id).level.should eq 7
+    end # it
+  end # put
 
 end

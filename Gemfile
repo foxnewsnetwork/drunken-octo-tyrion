@@ -6,7 +6,7 @@ gem "devise", "~> 2.1.2"
 gem "haml", "~> 3.1.7"
 gem "decent_exposure", "~> 2.0.0"
 gem "redis", "~>3.0.2"
-gem "tsundere", "~> 0.1.0"
+gem "tsundere", "~> 0.1.5"
 gem 'rails-i18n'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
