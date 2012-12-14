@@ -32,11 +32,12 @@ module UsersHelper
 	def allow_management
 		filter_to 5
 	end # allow_management
-
 	def allow_sales
 		filter_to 3
 	end # allow_sales
-
+	def allow_worker
+		filter_to 1
+	end # allow_worker
 	private
 	def filter_to(level)
 		result = @@user_filters.inject([true, 0]) do |mem, source|

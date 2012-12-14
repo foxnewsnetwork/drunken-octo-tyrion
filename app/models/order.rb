@@ -17,8 +17,11 @@ class Order < ActiveRecord::Base
   ###
   # Tsundere
   ###
-  include Tsundere
+  4.times do |n|
+    attr_tsundere :fail => '??', :as => n
+  end # n
   attr_tsundere :net_income, :expenses, :as => { :accounting => 4 }
+
   ###
   # Scopes
   ###

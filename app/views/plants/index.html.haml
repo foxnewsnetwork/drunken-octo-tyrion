@@ -2,10 +2,9 @@
 	.row-fluid
 		.span12
 			%legend= t(:legend, :scope => [:plant, :view, :index])
-			-if user_signed_in? and !current_user.level.nil? and current_user.level > 4
-				=link_to new_plant_path, :class => "btn" do
-					=content_tag :i, "", :class => "icon-star" 
-					=t(:new_factory, :scope => [:plant, :view, :index])
+			=link_to tsundere_for(current_user).new_plant_path, :class => "btn" do
+				=content_tag :i, "", :class => "icon-star" 
+				=t(:new_factory, :scope => [:plant, :view, :index])
 	-plants.each do |plant|
 		.row-fluid
 			=render "doodads/body/tile", :tile => tilify( plant )

@@ -26,7 +26,6 @@ class PagesController < ApplicationController
 		end # map icon
 	end # tabs
 
-  
   def home
 
   end

@@ -3,7 +3,7 @@
 
 en: {
 	navigation: {
-		welcome: "Welcome, master" ,
+		welcome: "Welcome, %{name}" ,
 	} ,
 	page: {
 		controller: {
@@ -24,7 +24,6 @@ en: {
 			} ,
 			show: {
 				legend: "Factory Attributes" ,
-				
 			}
 		}
 	}

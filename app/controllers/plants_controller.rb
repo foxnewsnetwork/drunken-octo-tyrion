@@ -2,13 +2,22 @@ class PlantsController < ApplicationController
 	###
 	# tsundere
 	###
-	
+	{:worker => 1 , :logistics => 2 , :sales => 3 , :accounting => 4}.each do |friendzoned, ind|
+		attr_tsundere :fail => "#access_denied", :as => ind
+	end # friendzoned
+	attr_tsundere :plant_sales_path, :plant_purchases_path, :plant_materials_path, :as => 3
+	attr_tsundere :plant_outgoing_invoices_path, :plant_incoming_invoices_path, :as => 4
+	attr_tsundere :new_plant_path, :as => 5
+	attr_tsundere :edit_plant_path, :as => 6
+
+
 	###
 	# decent exposure
 	###
 	expose(:plants)
 	expose(:plant)# ,  :finder => :find, :finder_parameter => :id )
 	before_filter :allow_management, :only => [:create, :update, :destroy]
+	before_filter :allow_worker, :only => [:index, :show, :new, :edit]
 
 
 	def create

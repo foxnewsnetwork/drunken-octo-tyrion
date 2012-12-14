@@ -2,11 +2,11 @@
 	.row-fluid.centered
 		-if user_signed_in?
 			-if !current_user.level.nil? and current_user.level > 2
-				=render "doodads/body/tabs", :tabs => tabify(plant.tsundere_for(current_user.level), :sale, :outgoing, :inventory)
+				=render "doodads/body/tabs", :tabs => tabify(plant.tsundere_for(current_user), :sale, :outgoing, :inventory)
 	.row-fluid.centered
 		-if user_signed_in?
 			-if !current_user.level.nil? and current_user.level > 2
-				=render "doodads/body/tabs", :tabs => tabify(plant.tsundere_for(current_user.level), :purchase, :incoming, :edit)
+				=render "doodads/body/tabs", :tabs => tabify(plant.tsundere_for(current_user), :purchase, :incoming, :edit)
 	.row-fluid
 		.span12
 			%legend= t(:legend, :scope => [:plant, :view, :show])
