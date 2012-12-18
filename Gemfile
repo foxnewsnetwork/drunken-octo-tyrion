@@ -21,6 +21,7 @@ group :development do
 	gem 'faker'
 	gem 'annotate', ">=2.5.0.pre1"
 	gem 'debugger'
+  gem 'simplecov'
 end # development
 
 # Gems used only for assets and not required

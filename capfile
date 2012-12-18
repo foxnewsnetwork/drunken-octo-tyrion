@@ -1,2 +1,6 @@
 # Capistrano tasks file
 # Will put in content when I deploy
+
+task :clone_from_github, :hosts => "localhost" do
+
+end # clone_from_github

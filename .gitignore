@@ -19,3 +19,6 @@
 
 # Ignore the redis dump
 dump.rdb
+
+# Ignore simplecov files
+coverage
