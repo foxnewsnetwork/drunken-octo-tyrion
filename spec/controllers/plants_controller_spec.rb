@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe PlantsController do
 	describe "gets" do 
+		login_user 3
 		before :each do 
 			@plant = FactoryGirl.create :plant
 		end # each
